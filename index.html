@@ -270,6 +270,7 @@
                 statusText.innerText = winner === "X" ? "You Win! 🎉" : "Computer Wins! 🤖";
                 statusText.style.color = winner === "X" ? "var(--accent-color)" : "#39E09B";
                 gameActive = false;
+                cells.forEach(cell => cell.classList.remove('fading'));
             }
         }
 
