@@ -52,6 +52,10 @@ header {
 .nav-links a:hover {
     color: var(--accent-color);
 }
+.nav-links a.active {
+    color: var(--accent-color);
+    font-weight: 700;
+}
 
 /* Main Content Area */
 main {
