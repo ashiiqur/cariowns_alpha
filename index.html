@@ -78,7 +78,14 @@
                 <!-- Game 1: Tic-Tac-Toe -->
                 <div class="game-box">
                     <h3 style="color: var(--accent-color); margin-bottom: 10px;">Tic-Tac-Toe</h3>
-                    <p id="game-status" style="margin-bottom: 20px;">You vs. Computer. Your turn (X)!</p>
+                    <p id="game-status" style="margin-bottom: 20px;">You vs. Computer. Let's PLAY!</p>
+                    <div style="margin-bottom: 15px; margin-top: 10px;">
+    <label for="first-player" style="font-weight: bold; margin-right: 10px;">Who plays first?</label>
+    <select id="first-player" class="turn-dropdown">
+        <option value="player">You (X)</option>
+        <option value="computer">Computer (O)</option>
+    </select>
+</div>
                     <div class="tic-tac-toe-board">
                         <div class="cell" data-index="0"></div>
                         <div class="cell" data-index="1"></div>
