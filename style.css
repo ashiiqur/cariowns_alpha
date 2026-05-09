@@ -187,6 +187,18 @@ audio {
     width: 100%;
     outline: none;
 }
+/* Styling for the clickable track titles */
+.music-card h3 a {
+    color: inherit; /* Keeps the red color you already set for the h3 */
+    text-decoration: none; /* Removes the default blue underline */
+    transition: opacity 0.3s ease; /* Smooth transition for the hover effect */
+}
+
+/* Adds a nice effect when they hover over the title */
+.music-card h3 a:hover {
+    opacity: 0.7; /* Makes it slightly transparent to show it's clickable */
+    text-decoration: underline; /* Optional: adds a neat underline on hover */
+}
 
 /* =========================================
    VISUALS PAGE STYLES 
