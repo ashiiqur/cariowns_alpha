@@ -31,9 +31,9 @@ header {
 
 /* Desktop Navigation Links */
 .nav-links a {
-    display: flex;          /* Allows the icon and text to sit side-by-side */
-    align-items: center;    /* Centers them vertically */
-    gap: 8px;               /* Adds a little space between the icon and the word */
+    display: inline-flex;   /* <-- CHANGE THIS FROM 'flex' TO 'inline-flex' */
+    align-items: center;
+    gap: 8px;
     color: var(--text-color);
     text-decoration: none;
     margin-left: 20px;
