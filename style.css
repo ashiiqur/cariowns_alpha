@@ -504,3 +504,9 @@ audio {
     background-color: #555;
     color: #ffffff;
 }
+/* Makes the oldest Tic-Tac-Toe piece fade out so you know it's going to disappear */
+.cell.fading {
+    opacity: 0.3;
+    transform: scale(0.85); /* Shrinks it slightly */
+    transition: all 0.3s ease;
+}
