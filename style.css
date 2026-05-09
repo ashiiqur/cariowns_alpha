@@ -29,9 +29,15 @@ header {
     height: 40px;
 }
 
+/* Desktop Navigation Container */
+.nav-links {
+    display: flex;
+    align-items: center; 
+}
+
 /* Desktop Navigation Links */
 .nav-links a {
-    display: inline-flex;   /* <-- CHANGE THIS FROM 'flex' TO 'inline-flex' */
+    display: flex; 
     align-items: center;
     gap: 8px;
     color: var(--text-color);
@@ -96,17 +102,17 @@ footer a {
 
     /* Redesign the nav into a dropdown menu */
     .nav-links {
-        display: none; /* Hide normal links by default */
-        flex-direction: column; /* Stack links vertically */
-        position: absolute; /* Take it out of the normal layout */
-        top: 100%; /* Drop down directly under the header */
+        display: none; 
+        flex-direction: column; 
+        align-items: center; /* <--- THIS IS THE MAGIC LINE FOR MOBILE CENTERING */
+        position: absolute; 
+        top: 100%; 
         left: 0;
         width: 100%;
         background-color: #000;
         border-bottom: 1px solid #333;
         padding: 20px 0;
-        text-align: center;
-        z-index: 100; /* Ensure it stays on top of images */
+        z-index: 100; 
     }
 
     /* Space out the links for easier tapping on mobile */
