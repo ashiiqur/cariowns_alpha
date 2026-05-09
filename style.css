@@ -115,10 +115,12 @@ footer a {
         z-index: 100; 
     }
 
-   /* Space out the links for easier tapping on mobile */
+   /* Space out the links and FORCE them to the center on mobile */
     .nav-links a {
-        justify-content: center; 
-        margin: 15px 0 !important; /* The !important tag forces it to ignore the 20px desktop shift */
+        width: 100% !important;           /* Forces the link to stretch across the screen */
+        justify-content: center !important; /* Centers the icon and text perfectly */
+        margin: 15px 0 !important;        /* Kills the desktop margin */
+        padding: 0 !important;            /* Removes any hidden padding */
         font-size: 18px;
     }
 
