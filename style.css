@@ -53,8 +53,8 @@ header {
     color: var(--accent-color);
 }
 .nav-links a.active {
-    color: var(--accent-color);
-    font-weight: 700;
+    color: var(--accent-color) !important;
+    font-weight: 700 !important;
 }
 
 /* Main Content Area */
