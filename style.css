@@ -269,3 +269,26 @@ audio {
     font-weight: bold; /* Makes it bold on hover */
     color: var(--accent-color); /* Optional: turns it red on hover for extra flair! Remove this line if you want it to stay white */
 }
+/* About Page Contact Section */
+.contact-section {
+    margin-top: 50px;
+    padding-top: 40px;
+    border-top: 1px solid #333; /* Adds a subtle dark grey line above the section */
+}
+
+.email-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 2px solid var(--accent-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: all 0.3s ease;
+}
+
+/* Fills the button with your red accent color when hovered */
+.email-btn:hover {
+    background-color: var(--accent-color);
+    color: #ffffff; /* Ensures the text stays white */
+}
