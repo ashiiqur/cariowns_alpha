@@ -77,9 +77,14 @@
                 
                 <!-- Game 1: Tic-Tac-Toe -->
                 <div class="game-box">
-                    <h3 style="color: var(--accent-color); margin-bottom: 10px;">Tic-Tac-Toe</h3>
-                    <p id="game-status" style="margin-bottom: 20px;">You vs. Computer. Let's PLAY!</p>
-                    <div style="margin-bottom: 15px; margin-top: 10px;">
+    <h3 style="color: var(--accent-color); margin-bottom: 10px;">Tic-Tac-Toe</h3>
+    
+    <!-- Paste the battle screen right here! -->
+    <div class="battle-screen">
+        <p id="game-status" style="margin: 0; font-family: monospace; font-size: 1.1rem; font-weight: bold;">Your turn (X)!</p>
+    </div>
+    
+    <div style="margin-bottom: 15px; margin-top: 10px;">
     <label for="first-player" style="font-weight: bold; margin-right: 10px;">Who plays first?</label>
     <select id="first-player" class="turn-dropdown">
         <option value="player">You (X)</option>
@@ -103,7 +108,6 @@
                 <!-- Game 2: Boss Fight Fighter -->
                 <div class="game-box">
                     <h3 style="color: #39E09B; margin-bottom: 10px;">Boss Fight! (Hard)</h3>
-                    <p id="fighter-status" style="margin-bottom: 20px;">You vs. Computer. Let's Fight!</p>
                     
                     <!-- NEW RETRO BATTLE SCREEN -->
                     <div class="battle-screen">
