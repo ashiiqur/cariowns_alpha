@@ -138,18 +138,21 @@
             navLinks.classList.toggle('active');
         });
     </script>
-    <!-- Game Logic Script -->
+   <!-- Infinite Tic-Tac-Toe Logic Script -->
     <script>
         const cells = document.querySelectorAll('.cell');
         const statusText = document.getElementById('game-status');
         const resetButton = document.getElementById('reset-game');
+        
         let board = ["", "", "", "", "", "", "", "", ""];
+        let playerMoves = []; // Tracks the order of your 'X' moves
+        let computerMoves = []; // Tracks the order of 'O' moves
         let gameActive = true;
 
         const winConditions = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-            [0, 4, 8], [2, 4, 6]             // Diagonals
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
         ];
 
         cells.forEach(cell => cell.addEventListener('click', handleCellClick));
@@ -159,31 +162,76 @@
             const index = e.target.getAttribute('data-index');
             if (board[index] !== "" || !gameActive) return;
 
-            updateCell(e.target, index, "X");
+            placePiece(index, "X", playerMoves);
             checkWinner();
 
             if (gameActive) {
-                setTimeout(computerMove, 400); // Slight delay so the computer seems like it's "thinking"
+                setTimeout(computerMove, 500); // Computer "thinks" for half a second
             }
         }
 
-        function updateCell(cell, index, player) {
+        function placePiece(index, player, moveQueue) {
+            // 1. Place the new piece on the board
             board[index] = player;
+            let cell = document.querySelector(`.cell[data-index="${index}"]`);
             cell.innerText = player;
             cell.classList.add(player.toLowerCase());
+            cell.classList.remove('fading');
+            moveQueue.push(index);
+
+            // 2. The Infinite Loop: If a 4th piece is placed, remove the 1st one!
+            if (moveQueue.length > 3) {
+                let oldestIndex = moveQueue.shift();
+                board[oldestIndex] = ""; // Erase from memory
+                let oldestCell = document.querySelector(`.cell[data-index="${oldestIndex}"]`);
+                oldestCell.innerText = ""; // Erase from screen
+                oldestCell.classList.remove(player.toLowerCase(), 'fading');
+            }
+
+            // 3. Apply the fading effect to the NEW oldest piece so you know it vanishes next
+            if (moveQueue.length === 3) {
+                let nextToFadeIndex = moveQueue[0];
+                let nextToFadeCell = document.querySelector(`.cell[data-index="${nextToFadeIndex}"]`);
+                nextToFadeCell.classList.add('fading');
+            }
         }
 
         function computerMove() {
             let available = [];
             board.forEach((val, idx) => { if (val === "") available.push(idx); });
-
             if (available.length === 0) return;
 
-            // Computer picks a random empty spot
-            let randomIdx = available[Math.floor(Math.random() * available.length)];
-            let cell = document.querySelector(`.cell[data-index="${randomIdx}"]`);
-            
-            updateCell(cell, randomIdx, "O");
+            let selectedIdx = -1;
+
+            // SMART BOT: 1. Try to Win immediately
+            for(let i=0; i<winConditions.length; i++) {
+                let [a,b,c] = winConditions[i];
+                let line = [board[a], board[b], board[c]];
+                if (line.filter(x => x === "O").length === 2 && line.filter(x => x === "").length === 1) {
+                    selectedIdx = line.indexOf("") === 0 ? a : (line.indexOf("") === 1 ? b : c);
+                    break;
+                }
+            }
+
+            // SMART BOT: 2. Block the player if they are about to win
+            if (selectedIdx === -1) {
+                for(let i=0; i<winConditions.length; i++) {
+                    let [a,b,c] = winConditions[i];
+                    let line = [board[a], board[b], board[c]];
+                    if (line.filter(x => x === "X").length === 2 && line.filter(x => x === "").length === 1) {
+                        selectedIdx = line.indexOf("") === 0 ? a : (line.indexOf("") === 1 ? b : c);
+                        break;
+                    }
+                }
+            }
+
+            // SMART BOT: 3. Otherwise, grab the center, or pick a random spot
+            if (selectedIdx === -1) {
+                if (board[4] === "") selectedIdx = 4;
+                else selectedIdx = available[Math.floor(Math.random() * available.length)];
+            }
+
+            placePiece(selectedIdx, "O", computerMoves);
             checkWinner();
         }
 
@@ -202,23 +250,22 @@
 
             if (roundWon) {
                 statusText.innerText = winner === "X" ? "You Win! 🎉" : "Computer Wins! 🤖";
-                gameActive = false;
-                return;
-            }
-
-            if (!board.includes("")) {
-                statusText.innerText = "It's a Draw! 🤝";
+                statusText.style.color = winner === "X" ? "var(--accent-color)" : "#39E09B";
                 gameActive = false;
             }
+            // (Note: Removed the "Draw" text because Infinite Tic-Tac-Toe never ends in a draw!)
         }
 
         function resetGame() {
             board = ["", "", "", "", "", "", "", "", ""];
+            playerMoves = [];
+            computerMoves = [];
             gameActive = true;
             statusText.innerText = "You vs. Computer. Your turn (X)!";
+            statusText.style.color = "var(--text-color)";
             cells.forEach(cell => {
                 cell.innerText = "";
-                cell.classList.remove("x", "o");
+                cell.classList.remove("x", "o", "fading");
             });
         }
     </script>
