@@ -213,5 +213,100 @@
             });
         }
     </script>
+    <!-- Fighter Game Logic -->
+    <script>
+        let playerHp = 100;
+        let bossHp = 150; // Boss starts with more HP!
+        let fighterActive = true;
+
+        const pBar = document.getElementById('player-hp');
+        const bBar = document.getElementById('boss-hp');
+        const pText = document.getElementById('p-hp-text');
+        const bText = document.getElementById('b-hp-text');
+        const fStatus = document.getElementById('fighter-status');
+        const attackBtn = document.getElementById('btn-attack');
+        const healBtn = document.getElementById('btn-heal');
+        const resetFighterBtn = document.getElementById('reset-fighter');
+
+        attackBtn.addEventListener('click', () => playerTurn('attack'));
+        healBtn.addEventListener('click', () => playerTurn('heal'));
+        resetFighterBtn.addEventListener('click', resetFighter);
+
+        function updateBars() {
+            pBar.style.width = Math.max(0, playerHp) + '%';
+            bBar.style.width = (Math.max(0, bossHp) / 1.5) + '%'; // Divided by 1.5 because max is 150
+            pText.innerText = Math.max(0, playerHp);
+            bText.innerText = Math.max(0, bossHp);
+        }
+
+        function playerTurn(action) {
+            if(!fighterActive) return;
+
+            if(action === 'attack') {
+                let dmg = Math.floor(Math.random() * 11) + 10; // Hits for 10-20 damage
+                bossHp -= dmg;
+                fStatus.innerText = `You attacked! Dealt ${dmg} damage.`;
+                fStatus.style.color = 'var(--accent-color)';
+            } else {
+                let heal = Math.floor(Math.random() * 16) + 15; // Heals for 15-30 HP
+                playerHp = Math.min(100, playerHp + heal);
+                fStatus.innerText = `You healed for ${heal} HP!`;
+                fStatus.style.color = '#39E09B';
+            }
+
+            updateBars();
+            checkFighterWin();
+
+            if(fighterActive) {
+                attackBtn.disabled = true;
+                healBtn.disabled = true;
+                setTimeout(bossTurn, 1000); // Boss waits 1 second before striking back
+            }
+        }
+
+        function bossTurn() {
+            let dmg = Math.floor(Math.random() * 16) + 15; // Boss hits HARD (15-30 damage)
+            playerHp -= dmg;
+            fStatus.innerText = `Boss attacks! You took ${dmg} damage.`;
+            fStatus.style.color = 'white';
+            updateBars();
+            checkFighterWin();
+            attackBtn.disabled = false;
+            healBtn.disabled = false;
+        }
+
+        function checkFighterWin() {
+            if(bossHp <= 0) {
+                fStatus.innerText = "VICTORY! You defeated the Boss! 🎉";
+                fStatus.style.color = '#39E09B';
+                endFighter();
+            } else if (playerHp <= 0) {
+                fStatus.innerText = "GAME OVER! You were destroyed. 💀";
+                fStatus.style.color = 'var(--accent-color)';
+                endFighter();
+            }
+        }
+
+        function endFighter() {
+            fighterActive = false;
+            attackBtn.style.display = 'none';
+            healBtn.style.display = 'none';
+            resetFighterBtn.style.display = 'inline-block';
+        }
+
+        function resetFighter() {
+            playerHp = 100;
+            bossHp = 150;
+            fighterActive = true;
+            fStatus.innerText = "Defeat the digital boss!";
+            fStatus.style.color = 'white';
+            attackBtn.style.display = 'inline-block';
+            healBtn.style.display = 'inline-block';
+            resetFighterBtn.style.display = 'none';
+            attackBtn.disabled = false;
+            healBtn.disabled = false;
+            updateBars();
+        }
+    </script>
 </body>
 </html>
