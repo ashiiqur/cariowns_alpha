@@ -150,12 +150,13 @@
         const cells = document.querySelectorAll('.cell');
         const statusText = document.getElementById('game-status');
         const resetButton = document.getElementById('reset-game');
+        const firstPlayerSelect = document.getElementById('first-player'); // The new dropdown
         
         let board = ["", "", "", "", "", "", "", "", ""];
         let playerMoves = []; 
         let computerMoves = []; 
         let gameActive = true;
-        let isComputerThinking = false; // <--- The new lock!
+        let isComputerThinking = false; 
 
         const winConditions = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -165,19 +166,21 @@
 
         cells.forEach(cell => cell.addEventListener('click', handleCellClick));
         resetButton.addEventListener('click', resetGame);
+        firstPlayerSelect.addEventListener('change', resetGame); // Restarts if you change who goes first
 
         function handleCellClick(e) {
             const index = e.target.getAttribute('data-index');
             
-            // If the cell is full, the game is over, or the computer is thinking, ignore the click!
             if (board[index] !== "" || !gameActive || isComputerThinking) return;
 
             placePiece(index, "X", playerMoves);
             checkWinner();
 
             if (gameActive) {
-                isComputerThinking = true; // Lock the board
-                setTimeout(computerMove, 500); // Wait half a second
+                isComputerThinking = true; 
+                statusText.innerText = "Computer is thinking..."; // Added dynamic text
+                statusText.style.color = "#39E09B";
+                setTimeout(computerMove, 500); 
             }
         }
 
@@ -189,7 +192,6 @@
             cell.classList.remove('fading');
             moveQueue.push(index);
 
-            // If 4 pieces are placed, delete the oldest one
             if (moveQueue.length > 3) {
                 let oldestIndex = moveQueue.shift();
                 board[oldestIndex] = ""; 
@@ -198,7 +200,6 @@
                 oldestCell.classList.remove(player.toLowerCase(), 'fading');
             }
 
-            // Make the new oldest piece fade
             if (moveQueue.length === 3) {
                 let nextToFadeIndex = moveQueue[0];
                 let nextToFadeCell = document.querySelector(`.cell[data-index="${nextToFadeIndex}"]`);
@@ -243,7 +244,13 @@
 
             placePiece(selectedIdx, "O", computerMoves);
             checkWinner();
-            isComputerThinking = false; // Unlock the board so you can click again
+            isComputerThinking = false; 
+            
+            // Tells you it's your turn again!
+            if (gameActive) {
+                statusText.innerText = "Your turn (X)!";
+                statusText.style.color = "var(--text-color)";
+            }
         }
 
         function checkWinner() {
@@ -272,12 +279,22 @@
             computerMoves = [];
             gameActive = true;
             isComputerThinking = false;
-            statusText.innerText = "You vs. Computer. Your turn (X)!";
-            statusText.style.color = "var(--text-color)";
+            
             cells.forEach(cell => {
                 cell.innerText = "";
                 cell.classList.remove("x", "o", "fading");
             });
+
+            // Logic for checking who goes first
+            if (firstPlayerSelect.value === 'computer') {
+                statusText.innerText = "Computer is thinking...";
+                statusText.style.color = "#39E09B";
+                isComputerThinking = true;
+                setTimeout(computerMove, 500); // Computer takes the first turn!
+            } else {
+                statusText.innerText = "You vs. Computer. Your turn (X)!";
+                statusText.style.color = "var(--text-color)";
+            }
         }
     </script>
     <!-- Fighter Game Logic -->
