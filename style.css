@@ -44,6 +44,8 @@ header {
     text-decoration: none;
     margin-left: 20px;
     font-weight: 500;
+    text-transform: uppercase; /* THIS MAKES ALL LETTERS CAPITAL */
+    letter-spacing: 1px;       /* This adds a tiny bit of space between the letters */
     transition: color 0.3s;
 }
 
@@ -117,11 +119,13 @@ footer a {
 
    /* Space out the links and FORCE them to the center on mobile */
     .nav-links a {
-        width: 100% !important;           /* Forces the link to stretch across the screen */
-        justify-content: center !important; /* Centers the icon and text perfectly */
-        margin: 15px 0 !important;        /* Kills the desktop margin */
-        padding: 0 !important;            /* Removes any hidden padding */
+        width: 100% !important;
+        justify-content: center !important;
+        margin: 15px 0 !important;
+        padding: 0 !important;
         font-size: 18px;
+        text-transform: uppercase !important; /* Forces all caps on mobile */
+        letter-spacing: 1px !important;       /* Keeps the modern spacing */
     }
 
     /* This class is triggered by the JavaScript script */
