@@ -550,30 +550,41 @@ audio {
     opacity: 0; /* Hidden until animated */
 }
 
-/* Player Bullet (Red/Accent, shoots Right) */
+/* Player Bullet (Hidden by default, waiting to be fired) */
 .player-bullet {
     background-color: #ff4c4c;
-    box-shadow: 0 0 8px #ff4c4c; /* Gives it a glowing laser effect! */
+    box-shadow: 0 0 8px #ff4c4c;
     top: 40%;
-    animation: shootRight 1.2s linear infinite;
+    /* Notice we removed the infinite animation here! */
 }
 
-/* Boss Bullet 1 (Green, shoots Left) */
+/* Boss Bullet 1 (Hidden by default) */
 .boss-bullet {
     background-color: #39E09B;
     box-shadow: 0 0 8px #39E09B;
     top: 20%;
-    animation: shootLeft 1.5s linear infinite;
-    animation-delay: 0.5s; /* Delays it so they don't fire at the exact same time */
 }
 
-/* Boss Bullet 2 (Green, shoots Left) */
+/* Boss Bullet 2 (Hidden by default) */
 .boss-bullet-2 {
     background-color: #39E09B;
     box-shadow: 0 0 8px #39E09B;
     top: 70%;
-    animation: shootLeft 1.8s linear infinite;
-    animation-delay: 1.1s;
+}
+
+/* --- THE NEW TRIGGER CLASSES --- */
+/* JavaScript will add these classes ONLY when an attack happens */
+.player-bullet.firing {
+    animation: shootRight 0.4s linear; /* Much faster bullet! */
+}
+
+.boss-bullet.firing {
+    animation: shootLeft 0.4s linear;
+}
+
+.boss-bullet-2.firing {
+    animation: shootLeft 0.4s linear;
+    animation-delay: 0.1s; /* Slight delay so it looks like a double-shot */
 }
 
 /* Animation Keyframes: Left to Right */
