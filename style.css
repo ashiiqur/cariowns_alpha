@@ -486,3 +486,21 @@ audio {
     font-size: 1.1rem;
     font-weight: bold;
 }
+/* Styling for the Boss Fight Play Again Button */
+#reset-fighter {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 2px solid #555;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+#reset-fighter:hover {
+    background-color: #555;
+    color: #ffffff;
+}
