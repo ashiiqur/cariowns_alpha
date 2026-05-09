@@ -334,59 +334,79 @@ audio {
     background-color: var(--accent-color);
     color: #ffffff; /* Fills with red when hovered */
 }
-/* --- MINI GAME SECTION --- */
-.game-section {
+/* --- GAMES WRAPPER (Handles side-by-side & mobile stacking) --- */
+.all-games-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* This is the magic that stacks them on mobile! */
+    justify-content: center;
+    gap: 50px;
     margin-top: 60px;
     padding-top: 40px;
     border-top: 1px solid #333;
+}
+
+.game-box {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 300px; /* Keeps the games neat and compact */
 }
 
-.tic-tac-toe-board {
-    display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: 5px;
+/* --- FIGHTER GAME STYLES --- */
+.health-bars {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
-.cell {
-    width: 80px;
-    height: 80px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
+.hp-box {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    font-weight: bold;
+}
+
+.hp-bar-bg {
+    width: 100%;
+    height: 20px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #333;
+    margin-top: 5px;
+}
+
+.hp-fill {
+    height: 100%;
+    width: 100%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.player-hp { background-color: var(--accent-color); }
+.boss-hp { background-color: #39E09B; }
+
+.fighter-controls {
+    display: flex;
+    gap: 10px;
     justify-content: center;
-    align-items: center;
-    font-size: 3rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    width: 100%;
 }
 
-.cell:hover {
-    background-color: #2a2a2a;
-}
-
-/* Colors for the X (Player) and O (Computer) */
-.cell.x { color: var(--accent-color); }
-.cell.o { color: #39E09B; }
-
-/* Styling for the Reset Button */
-#reset-game {
-    background-color: transparent;
-    color: var(--text-color);
-    border: 2px solid #555;
+.action-btn {
     padding: 10px 20px;
+    background-color: #1a1a1a;
+    border: 2px solid #555;
+    color: var(--text-color);
     cursor: pointer;
-    border-radius: 5px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
 }
 
-#reset-game:hover {
-    background-color: #555;
-    color: #ffffff;
+.action-btn:hover {
+    background-color: #333;
 }
+
+#btn-attack:hover { border-color: var(--accent-color); color: var(--accent-color); }
+#btn-heal:hover { border-color: #39E09B; color: #39E09B; }
