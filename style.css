@@ -259,3 +259,13 @@ audio {
 .gallery-item:hover .gallery-overlay {
     transform: translateY(0);
 }
+/* Styling for text links inside paragraphs */
+.text-link {
+    color: var(--text-color); /* Keeps it white to match the paragraph */
+    text-decoration: underline; /* Adds the underline */
+}
+
+.text-link:hover {
+    font-weight: bold; /* Makes it bold on hover */
+    color: var(--accent-color); /* Optional: turns it red on hover for extra flair! Remove this line if you want it to stay white */
+}
