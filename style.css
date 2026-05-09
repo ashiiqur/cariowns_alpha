@@ -131,6 +131,12 @@ footer a {
     .nav-links.active {
         display: flex;
     }
+    /* Adds an invisible counterweight to the right of HOME to balance the icon */
+    .nav-links a:first-child::after {
+        content: '';
+        width: 18px; /* This exactly matches the width of your SVG icon */
+        display: block;
+    }
 }
 /* =========================================
    MUSIC PAGE STYLES 
