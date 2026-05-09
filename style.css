@@ -334,15 +334,24 @@ audio {
     background-color: var(--accent-color);
     color: #ffffff; /* Fills with red when hovered */
 }
-/* --- GAMES WRAPPER (Handles side-by-side & mobile stacking) --- */
-.all-games-wrapper {
-    display: flex;
-    flex-wrap: wrap; /* This is the magic that stacks them on mobile! */
-    justify-content: center;
-    gap: 50px;
+/* --- GAMES CONTAINER & WRAPPER --- */
+.games-container {
     margin-top: 60px;
     padding-top: 40px;
     border-top: 1px solid #333;
+}
+
+.games-main-title {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 40px; 
+}
+
+.all-games-wrapper {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: center;
+    gap: 50px;
 }
 
 .game-box {
@@ -455,4 +464,25 @@ audio {
 #reset-game:hover {
     background-color: #555;
     color: #ffffff;
+}
+/* --- BATTLE SCREEN FOR BOSS FIGHT --- */
+.battle-screen {
+    width: 100%;
+    min-height: 60px;
+    background-color: #0a0a0a; /* Makes the screen darker than the background */
+    border: 2px solid #333; /* Screen bezel */
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+}
+
+#fighter-status {
+    margin: 0;
+    font-family: monospace; /* Gives it a cool retro gaming text vibe! */
+    font-size: 1.1rem;
+    font-weight: bold;
 }
