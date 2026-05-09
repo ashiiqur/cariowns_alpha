@@ -117,14 +117,17 @@ footer a {
         z-index: 100; 
     }
 
-   /* Space out the links and FORCE them to the center on mobile */
+  /* Space out the links and FORCE them to the center on mobile */
     .nav-links a {
+        display: flex !important;          /* Keeps icon and text side-by-side */
+        align-items: center !important;    /* Forces text to align middle with icon */
         width: 100% !important;
         justify-content: center !important;
         margin: 15px 0 !important;
         padding: 0 !important;
         font-size: 18px;
-        letter-spacing: 1px !important;       /* Keeps the modern spacing */
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
     }
 
     /* This class is triggered by the JavaScript script */
