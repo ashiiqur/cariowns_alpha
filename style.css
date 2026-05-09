@@ -115,10 +115,10 @@ footer a {
         z-index: 100; 
     }
 
-    /* Space out the links for easier tapping on mobile */
+   /* Space out the links for easier tapping on mobile */
     .nav-links a {
-        justify-content: center; /* Centers the icon and text in the dropdown */
-        margin: 15px 0;
+        justify-content: center; 
+        margin: 15px 0 !important; /* The !important tag forces it to ignore the 20px desktop shift */
         font-size: 18px;
     }
 
