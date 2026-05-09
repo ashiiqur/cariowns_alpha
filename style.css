@@ -124,7 +124,6 @@ footer a {
         margin: 15px 0 !important;
         padding: 0 !important;
         font-size: 18px;
-        text-transform: uppercase !important; /* Forces all caps on mobile */
         letter-spacing: 1px !important;       /* Keeps the modern spacing */
     }
 
