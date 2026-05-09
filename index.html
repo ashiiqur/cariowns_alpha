@@ -68,50 +68,58 @@
             <a href="https://linktr.ee/cariowns" target="_blank" class="btn linktree-btn">Linktree</a>
             <a href="ABOUT/" class="btn about-btn">About</a>
         </div>
-        <!-- Mini Games Section -->
-        <div class="all-games-wrapper">
+        <!-- Games Section -->
+        <div class="games-container">
+            <!-- Centered Main Title -->
+            <h2 class="games-main-title">Bored? Play a Quick Game!</h2>
             
-            <!-- Game 1: Tic-Tac-Toe -->
-            <div class="game-box">
-                <h3 style="color: var(--accent-color); margin-bottom: 10px;">Bored? Play a Quick Game!</h3>
-                <p id="game-status" style="margin-bottom: 20px;">You vs. Computer. Your turn (X)!</p>
-                <div class="tic-tac-toe-board">
-                    <div class="cell" data-index="0"></div>
-                    <div class="cell" data-index="1"></div>
-                    <div class="cell" data-index="2"></div>
-                    <div class="cell" data-index="3"></div>
-                    <div class="cell" data-index="4"></div>
-                    <div class="cell" data-index="5"></div>
-                    <div class="cell" data-index="6"></div>
-                    <div class="cell" data-index="7"></div>
-                    <div class="cell" data-index="8"></div>
-                </div>
-                <button id="reset-game" class="btn">Restart Game</button>
-            </div>
-
-            <!-- Game 2: Boss Fight Fighter -->
-            <div class="game-box">
-                <h3 style="color: #39E09B; margin-bottom: 10px;">Boss Fight! (Hard)</h3>
-                <p id="fighter-status" style="margin-bottom: 20px;">Defeat the digital boss!</p>
+            <div class="all-games-wrapper">
                 
-                <div class="health-bars">
-                    <div class="hp-box">
-                        <span>You (HP: <span id="p-hp-text">100</span>)</span>
-                        <div class="hp-bar-bg"><div id="player-hp" class="hp-fill player-hp"></div></div>
+                <!-- Game 1: Tic-Tac-Toe -->
+                <div class="game-box">
+                    <h3 style="color: var(--accent-color); margin-bottom: 10px;">Tic-Tac-Toe</h3>
+                    <p id="game-status" style="margin-bottom: 20px;">You vs. Computer. Your turn (X)!</p>
+                    <div class="tic-tac-toe-board">
+                        <div class="cell" data-index="0"></div>
+                        <div class="cell" data-index="1"></div>
+                        <div class="cell" data-index="2"></div>
+                        <div class="cell" data-index="3"></div>
+                        <div class="cell" data-index="4"></div>
+                        <div class="cell" data-index="5"></div>
+                        <div class="cell" data-index="6"></div>
+                        <div class="cell" data-index="7"></div>
+                        <div class="cell" data-index="8"></div>
                     </div>
-                    <div class="hp-box">
-                        <span>Boss (HP: <span id="b-hp-text">150</span>)</span>
-                        <div class="hp-bar-bg"><div id="boss-hp" class="hp-fill boss-hp"></div></div>
-                    </div>
+                    <button id="reset-game" class="btn">Restart Game</button>
                 </div>
 
-                <div class="fighter-controls">
-                    <button id="btn-attack" class="btn action-btn">Attack</button>
-                    <button id="btn-heal" class="btn action-btn">Heal</button>
-                    <button id="reset-fighter" class="btn" style="display: none;">Play Again</button>
+                <!-- Game 2: Boss Fight Fighter -->
+                <div class="game-box">
+                    <h3 style="color: #39E09B; margin-bottom: 10px;">Boss Fight! (Hard)</h3>
+                    
+                    <!-- NEW RETRO BATTLE SCREEN -->
+                    <div class="battle-screen">
+                        <p id="fighter-status">Defeat the digital boss!</p>
+                    </div>
+                    
+                    <div class="health-bars">
+                        <div class="hp-box">
+                            <span>You (HP: <span id="p-hp-text">100</span>)</span>
+                            <div class="hp-bar-bg"><div id="player-hp" class="hp-fill player-hp"></div></div>
+                        </div>
+                        <div class="hp-box">
+                            <span>Boss (HP: <span id="b-hp-text">150</span>)</span>
+                            <div class="hp-bar-bg"><div id="boss-hp" class="hp-fill boss-hp"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="fighter-controls">
+                        <button id="btn-attack" class="btn action-btn">Attack</button>
+                        <button id="btn-heal" class="btn action-btn">Heal</button>
+                        <button id="reset-fighter" class="btn" style="display: none;">Play Again</button>
+                    </div>
                 </div>
             </div>
-
         </div>
     </main>
 
