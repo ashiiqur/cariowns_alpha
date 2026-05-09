@@ -465,19 +465,20 @@ audio {
     background-color: #555;
     color: #ffffff;
 }
-/* --- BATTLE SCREEN FOR BOSS FIGHT --- */
+/* --- BATTLE SCREEN FOR BOTH GAMES --- */
 .battle-screen {
     width: 100%;
-    min-height: 60px;
-    background-color: #0a0a0a; /* Makes the screen darker than the background */
-    border: 2px solid #333; /* Screen bezel */
+    height: 90px; /* INCREASED vertical size! */
+    background-color: #0a0a0a; 
+    border: 2px solid #333; 
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Adjusted so dropdown fits nicely */
     padding: 10px;
     text-align: center;
+    box-sizing: border-box; /* Locks the height perfectly static */
 }
 
 #fighter-status {
