@@ -31,6 +31,9 @@ header {
 
 /* Desktop Navigation Links */
 .nav-links a {
+    display: flex;          /* Allows the icon and text to sit side-by-side */
+    align-items: center;    /* Centers them vertically */
+    gap: 8px;               /* Adds a little space between the icon and the word */
     color: var(--text-color);
     text-decoration: none;
     margin-left: 20px;
@@ -108,8 +111,8 @@ footer a {
 
     /* Space out the links for easier tapping on mobile */
     .nav-links a {
+        justify-content: center; /* Centers the icon and text in the dropdown */
         margin: 15px 0;
-        display: block;
         font-size: 18px;
     }
 
