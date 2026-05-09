@@ -510,3 +510,19 @@ audio {
     transform: scale(0.85); /* Shrinks it slightly */
     transition: all 0.3s ease;
 }
+/* --- TURN SELECTOR DROPDOWN --- */
+.turn-dropdown {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 2px solid #555;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: border-color 0.3s ease;
+}
+
+.turn-dropdown:hover, .turn-dropdown:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
