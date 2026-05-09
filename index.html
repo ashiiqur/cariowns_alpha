@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>cariowns | Construction Site</title>
+    
+    <!-- Meta Tags for Social Media Sharing -->
     <meta name="title" content="cariowns" />
-<meta name="description" content="The official website of cariowns. Discover new music and digital projects." />
+    <meta name="description" content="The official website of cariowns. Discover new music and digital projects." />
 
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://ashiiqur.github.io/cariowns_alpha/" />
-<meta property="og:title" content="cariowns" />
-<meta property="og:description" content="The official construction site of cariowns. Support us in the creation of this website on GitHub." />
-<meta property="og:image" content="https://ashiiqur.github.io/cariowns_alpha/preview.jpg?v=3" />
+    <!-- Open Graph (Facebook, Discord, iMessage) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ashiiqur.github.io/cariowns_alpha/" />
+    <meta property="og:title" content="cariowns" />
+    <meta property="og:description" content="The official construction site of cariowns. Support us in the creation of this website on GitHub." />
+    <meta property="og:image" content="https://ashiiqur.github.io/cariowns_alpha/preview.jpg?v=3" />
 
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content="https://ashiiqur.github.io/cariowns_alpha/" />
-<meta property="twitter:title" content="cariowns" />
-<meta property="twitter:description" content="The official construction site of cariowns. Support us in the creation of this website on GitHub." />
-<meta property="twitter:image" content="https://ashiiqur.github.io/cariowns_alpha/preview.jpg?v=3" />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://ashiiqur.github.io/cariowns_alpha/" />
+    <meta property="twitter:title" content="cariowns" />
+    <meta property="twitter:description" content="The official construction site of cariowns. Support us in the creation of this website on GitHub." />
+    <meta property="twitter:image" content="https://ashiiqur.github.io/cariowns_alpha/preview.jpg?v=3" />
+    
     <link rel="icon" type="image/jpeg" href="favicon.jpg">
+    <!-- Linking the global CSS file -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <div class="logo">
+            <!-- Logo and Text aligned perfectly -->
             <a href="index.html" style="display: flex; align-items: center; text-decoration: none; gap: 15px;">
                 <img src="assets/logo.png" alt="cariowns logo">
                 <span style="font-size: 24px; font-weight: bold; letter-spacing: 1.5px; color: #ffffff;">cariowns</span>
             </a>
         </div>
+        
+        <!-- The Hamburger Button (Hidden on desktop) -->
         <button class="menu-toggle" aria-label="Toggle menu">
             &#9776;
         </button>
+
+        <!-- Navigation Links -->
         <nav class="nav-links">
             <a href="index.html">Home</a>
             <a href="music.html">Music</a>
@@ -51,5 +62,14 @@
         <p>&copy; 2026 cariowns. All rights reserved.</p>
     </footer>
 
+    <!-- Hamburger Menu Script -->
+    <script>
+        const menuBtn = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
