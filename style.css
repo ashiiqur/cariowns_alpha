@@ -199,6 +199,16 @@ audio {
     opacity: 0.7; /* Makes it slightly transparent to show it's clickable */
     text-decoration: underline; /* Optional: adds a neat underline on hover */
 }
+/* Smooth transition for the image */
+.music-card a .album-art {
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+/* Zooms in slightly and brightens when hovered */
+.music-card a:hover .album-art {
+    transform: scale(1.05); /* Makes the image 5% bigger */
+    filter: brightness(1.1); /* Makes it slightly brighter */
+}
 
 /* =========================================
    VISUALS PAGE STYLES 
