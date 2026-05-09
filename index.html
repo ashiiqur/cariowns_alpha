@@ -344,6 +344,15 @@
                 bossHp -= dmg;
                 fStatus.innerHTML = `💥 BANG! 🔫<br>You dealt ${dmg} damage.`;
                 fStatus.style.color = 'var(--accent-color)';
+                
+                // 🔫 FIRE THE PLAYER BULLET!
+                const pBullet = document.querySelector('.player-bullet');
+                if(pBullet) {
+                    pBullet.classList.remove('firing'); 
+                    void pBullet.offsetWidth; // Force reset
+                    pBullet.classList.add('firing'); // Shoot!
+                }
+                
             } else {
                 let heal = Math.floor(Math.random() * 16) + 15; 
                 playerHp = Math.min(100, playerHp + heal);
@@ -366,12 +375,23 @@
             playerHp -= dmg;
             fStatus.innerHTML = `🩸 OUCH! 🩸<br>Boss hit for ${dmg} damage.`;
             fStatus.style.color = 'white';
+            
+            // 🔫 FIRE THE BOSS BULLETS!
+            const bBullet1 = document.querySelector('.boss-bullet');
+            const bBullet2 = document.querySelector('.boss-bullet-2');
+            if(bBullet1 && bBullet2) {
+                bBullet1.classList.remove('firing');
+                bBullet2.classList.remove('firing');
+                void bBullet1.offsetWidth; // Force reset
+                bBullet1.classList.add('firing'); // Shoot bullet 1!
+                bBullet2.classList.add('firing'); // Shoot bullet 2!
+            }
+
             updateBars();
             checkFighterWin();
             attackBtn.disabled = false;
             healBtn.disabled = false;
         }
-
         function checkFighterWin() {
             if(bossHp <= 0) {
                 fStatus.innerHTML = "🏆 VICTORY! 🏆<br>You defeated the Boss!";
