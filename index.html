@@ -332,14 +332,14 @@
             if(!fighterActive) return;
 
             if(action === 'attack') {
-                let dmg = Math.floor(Math.random() * 11) + 10; // Hits for 10-20 damage
+                let dmg = Math.floor(Math.random() * 11) + 10; 
                 bossHp -= dmg;
-                fStatus.innerText = `You attacked! Dealt ${dmg} damage.`;
+                fStatus.innerHTML = `💥 BANG! 🔫<br>You dealt ${dmg} damage.`;
                 fStatus.style.color = 'var(--accent-color)';
             } else {
-                let heal = Math.floor(Math.random() * 16) + 15; // Heals for 15-30 HP
+                let heal = Math.floor(Math.random() * 16) + 15; 
                 playerHp = Math.min(100, playerHp + heal);
-                fStatus.innerText = `You healed for ${heal} HP!`;
+                fStatus.innerHTML = `✨ HEALED ✨<br>Recovered ${heal} HP!`;
                 fStatus.style.color = '#39E09B';
             }
 
@@ -349,14 +349,14 @@
             if(fighterActive) {
                 attackBtn.disabled = true;
                 healBtn.disabled = true;
-                setTimeout(bossTurn, 1000); // Boss waits 1 second before striking back
+                setTimeout(bossTurn, 1000); 
             }
         }
 
         function bossTurn() {
-            let dmg = Math.floor(Math.random() * 16) + 15; // Boss hits HARD (15-30 damage)
+            let dmg = Math.floor(Math.random() * 16) + 15; 
             playerHp -= dmg;
-            fStatus.innerText = `Boss attacks! You took ${dmg} damage.`;
+            fStatus.innerHTML = `🩸 OUCH! 🩸<br>Boss hit for ${dmg} damage.`;
             fStatus.style.color = 'white';
             updateBars();
             checkFighterWin();
@@ -366,16 +366,15 @@
 
         function checkFighterWin() {
             if(bossHp <= 0) {
-                fStatus.innerText = "VICTORY! You defeated the Boss! 🎉";
+                fStatus.innerHTML = "🏆 VICTORY! 🏆<br>You defeated the Boss!";
                 fStatus.style.color = '#39E09B';
                 endFighter();
             } else if (playerHp <= 0) {
-                fStatus.innerText = "GAME OVER! You were destroyed. 💀";
+                fStatus.innerHTML = "💀 GAME OVER 💀<br>You were destroyed.";
                 fStatus.style.color = 'var(--accent-color)';
                 endFighter();
             }
         }
-
         function endFighter() {
             fighterActive = false;
             attackBtn.style.display = 'none';
