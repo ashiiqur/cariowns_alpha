@@ -624,10 +624,11 @@ audio {
 
 /* --- PIANO KEYS --- */
 .piano {
-    display: flex;
-    justify-content: center;
-    position: relative;
-    height: 200px;
+    display: inline-flex; /* Shrinks the box to perfectly hug the keys */
+    max-width: 100%; /* Stops the box from growing wider than the screen */
+    overflow-x: auto; /* Allows smooth left/right swiping on mobile! */
+    margin: 0 auto; /* Keeps it dead-center on desktop, even zoomed in */
+    padding-bottom: 15px; /* Room for the mobile scrollbar */
 }
 
 .key {
@@ -647,8 +648,10 @@ audio {
 
 /* White Keys */
 .key.white {
-    width: 60px;
-    height: 100%;
+    min-width: 60px !important; /* MAGIC FIX: Absolutely forbids squishing */
+    width: 60px !important;
+    flex-shrink: 0 !important;
+    height: 200px;
     background-color: #ffffff;
     color: #555;
     z-index: 1;
@@ -660,13 +663,15 @@ audio {
 
 /* Black Keys */
 .key.black {
-    width: 40px;
-    height: 60%;
+    min-width: 40px !important; /* MAGIC FIX: Absolutely forbids squishing */
+    width: 40px !important;
+    flex-shrink: 0 !important;
+    height: 120px;
     background-color: #1a1a1a;
     color: #888;
     z-index: 2;
-    margin-left: -20px;
-    margin-right: -20px;
+    margin-left: -20px !important; /* Locks them exactly between the white keys */
+    margin-right: -20px !important;
     border: 1px solid #000;
 }
 
