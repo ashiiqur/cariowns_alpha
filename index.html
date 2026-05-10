@@ -83,7 +83,14 @@
     <div class="battle-screen">
         <p id="game-status" style="margin: 0; font-family: monospace; font-size: 1.1rem; font-weight: bold;">Your turn (X)!</p>
     </div>
-    
+
+    <div style="margin-bottom: 15px;">
+        <label for="game-mode" style="color: white; margin-right: 10px; font-weight: bold;">Game Mode:</label>
+        <select id="game-mode" style="background: #111; color: white; border: 1px solid #444; padding: 5px; border-radius: 4px; cursor: pointer;">
+            <option value="1p">1 Player (vs CPU)</option>
+            <option value="2p">2 Players (Local)</option>
+        </select>
+    </div>
     <div style="margin-bottom: 15px; margin-top: 10px;">
     <label for="first-player" style="font-weight: bold; margin-right: 10px;">Who plays first?</label>
     <select id="first-player" class="turn-dropdown">
