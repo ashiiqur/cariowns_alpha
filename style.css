@@ -671,27 +671,43 @@ audio {
 .key.black:active, .key.black.active {
     background-color: #333;
 }
-/* --- PITCH CONTROL BUTTONS --- */
+/* --- PITCH CONTROL BUTTONS (PRO ARCADE THEME) --- */
 #pitch-down, #pitch-up {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    border: 2px solid #555;
-    border-radius: 5px;
+    background-color: transparent; /* Removes the bulky gray box */
+    color: #ff9d00; /* Matches your mini-piano title */
+    border: 2px solid #ff9d00;
+    border-radius: 4px;
     font-family: monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase; /* Makes it look like arcade text */
+    letter-spacing: 1px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    box-shadow: 0 0 10px rgba(255, 157, 0, 0.2), inset 0 0 5px rgba(255, 157, 0, 0.2); /* Subtle neon glow */
+    transition: all 0.2s ease-in-out;
 }
 
-/* Add a cool glowing hover effect that matches the orange title! */
+/* Neon Glow Hover Effect */
 #pitch-down:hover, #pitch-up:hover {
-    background-color: #2a2a2a;
-    border-color: #ff9d00;
-    color: #ff9d00;
-    box-shadow: 0 0 8px rgba(255, 157, 0, 0.4);
+    background-color: #ff9d00;
+    color: #111; /* Text turns dark when button lights up */
+    box-shadow: 0 0 15px rgba(255, 157, 0, 0.6), inset 0 0 10px rgba(255, 157, 0, 0.4);
+    transform: translateY(-2px); /* Lifts the button up slightly */
 }
 
-/* Make them "press down" slightly when clicked */
+/* Button Press Effect */
 #pitch-down:active, #pitch-up:active {
-    transform: scale(0.95);
+    transform: translateY(1px); /* Pushes it down physically */
+    box-shadow: 0 0 5px rgba(255, 157, 0, 0.4);
+}
+
+/* Stabilize the Middle Text */
+#pitch-display {
+    display: inline-block;
+    min-width: 150px; /* Prevents buttons from twitching when text changes */
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
