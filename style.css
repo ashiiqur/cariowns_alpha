@@ -215,16 +215,14 @@ audio {
 /* =========================================
    VISUALS PAGE STYLES 
    ========================================= */
-.gallery-grid {
-    display: grid;
-    /* This creates a grid that wraps automatically */
-    grid-template-columns: repeat(auto-fit, 250px); 
-    gap: 20px;
-    margin-top: 40px;
-    justify-content: center; /* 👈 This keeps the whole grid in the middle! */
-    max-width: 1200px; /* Prevents it from getting too wide on huge monitors */
-    margin-left: auto;
-    margin-right: auto;
+.gallery-item img {
+    width: 100%; /* Tells it to fill the space */
+    max-width: 400px; /* 🔒 Magic Fix: Stops it from getting too wide on desktop, keeps it the "before" size! */
+    height: auto;
+    border-radius: 15px; /* Keeps your nice smooth corners */
+    display: block;
+    margin: 0 auto; /* Keeps the art perfectly centered on the screen */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Optional: Adds a cool pop-out shadow! */
 }
 
 .gallery-item {
