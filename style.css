@@ -671,40 +671,51 @@ audio {
 .key.black:active, .key.black.active {
     background-color: #333;
 }
-/* --- PITCH CONTROL BUTTONS (MATCHING ATTACK/HEAL BUTTONS) --- */
-#pitch-down, #pitch-up {
-    background-color: #111; /* Dark background */
-    color: #ffffff; /* White text */
-    border: 2px solid #444; /* Solid gray border */
-    border-radius: 0px; /* Sharp corners */
-    font-family: sans-serif; /* Matches the clean font in your image */
-    font-size: 1rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    
-    /* This creates the exact red/blue glitch effect seen on your Attack button */
+/* --- 1. PITCH CONTAINER (Forces 1 Line) --- */
+.pitch-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap; /* FORCES them to stay on one single horizontal line */
+    gap: 8px; /* Space between buttons */
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* --- 2. PITCH DISPLAY (Stops buttons from moving!) --- */
+#pitch-display {
+    display: inline-block;
+    width: 120px; /* 🔒 MAGIC FIX: Fixed width locks the spacing so buttons never shift! */
+    text-align: center;
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
     text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
-    
+    flex-shrink: 0; /* Stops the text area from getting squished on small phones */
+}
+
+/* --- 3. PITCH BUTTONS --- */
+#pitch-down, #pitch-up {
+    background-color: #111;
+    color: #ffffff;
+    border: 2px solid #444;
+    border-radius: 0px;
+    font-family: sans-serif;
+    font-size: 0.8rem; /* Slightly smaller to fit mobile screens perfectly */
+    padding: 8px 12px;
+    cursor: pointer;
+    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
+    white-space: nowrap; /* Stops the text inside the button from wrapping */
     transition: background-color 0.1s ease;
 }
 
 #pitch-down:hover, #pitch-up:hover {
-    background-color: #222; /* Slight lighten when hovering */
+    background-color: #222;
     border-color: #666;
 }
 
 #pitch-down:active, #pitch-up:active {
     background-color: #000;
     border-color: #333;
-}
-
-/* Keeps the center text stable and matching */
-#pitch-display {
-    display: inline-block;
-    min-width: 150px; 
-    text-align: center;
-    color: #fff;
-    font-family: sans-serif;
-    font-weight: bold;
-    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
 }
