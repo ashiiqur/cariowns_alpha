@@ -80,6 +80,38 @@
         const menuBtn = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+        // ==========================================
+// 🕰️ AUTOMATIC FILE DATE SYNC
+// ==========================================
+document.querySelectorAll('.gallery-item').forEach(item => {
+    const img = item.querySelector('img');
+    const dateDisplay = item.querySelector('.upload-date');
+    
+    if (img && dateDisplay) {
+        const filePath = img.getAttribute('src');
+
+        // Ask the server for the "HEAD" info of the image file
+        fetch(filePath, { method: 'HEAD' })
+            .then(response => {
+                const lastModified = response.headers.get('Last-Modified');
+                
+                if (lastModified) {
+                    const d = new Date(lastModified);
+                    
+                    // Format: "May 10, 2026 • 12:45"
+                    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+                    dateDisplay.innerHTML = `SERVER SYNC: ${dateStr} • ${timeStr}`;
+                } else {
+                    dateDisplay.innerHTML = "DATE: LOCAL_FILE";
+                }
+            })
+            .catch(() => {
+                dateDisplay.innerHTML = "SYNC_ERROR";
+            });
+    }
+});
     </script>
 </body>
 </html>
