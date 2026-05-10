@@ -291,9 +291,18 @@
 
             let selectedIdx = -1;
 
-            // 1. Computer tries to win
+            // 🧠 MAGIC FIX: Identify the computer's oldest piece that is about to fade!
+            let fadingComputerPiece = computerMoves.length === 3 ? computerMoves[0] : -1;
+
+            // 1. Computer tries to win (but ignores fake wins!)
             for(let i=0; i<winConditions.length; i++) {
                 let [a,b,c] = winConditions[i];
+                
+                // If a winning line relies on the piece that is about to vanish, IGNORE IT!
+                if (a === fadingComputerPiece || b === fadingComputerPiece || c === fadingComputerPiece) {
+                    continue; 
+                }
+
                 let line = [board[a], board[b], board[c]];
                 if (line.filter(x => x === "O").length === 2 && line.filter(x => x === "").length === 1) {
                     selectedIdx = line.indexOf("") === 0 ? a : (line.indexOf("") === 1 ? b : c);
@@ -313,19 +322,15 @@
                 }
             }
 
-           // 3. Strategic choice (Center -> Corners -> Edges)
+            // 3. Strategic choice (Center -> Corners -> Edges)
             if (selectedIdx === -1) {
-                // First priority: Take the center if it's open
                 if (board[4] === "") {
                     selectedIdx = 4;
                 } else {
-                    // Second priority: Try to take an open corner
                     const corners = [0, 2, 6, 8].filter(idx => board[idx] === "");
                     if (corners.length > 0) {
-                        // Pick a random available corner
                         selectedIdx = corners[Math.floor(Math.random() * corners.length)];
                     } else {
-                        // Last priority: Take whatever edge is left
                         selectedIdx = available[Math.floor(Math.random() * available.length)];
                     }
                 }
@@ -340,7 +345,6 @@
                 statusText.style.color = "var(--text-color)";
             }
         }
-
         function checkWinner() {
             let roundWon = false;
             let winner = "";
