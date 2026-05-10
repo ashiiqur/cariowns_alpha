@@ -40,28 +40,28 @@
 
         <!-- Visuals Grid -->
         <div class="gallery-grid">
-            <div class="gallery-item">
+            <div class="gallery-item" data-time="May 10, 2026 • 12:45">
                 <img src="assets/art1.jpg" alt="Artwork 1">
                 <div class="gallery-overlay">
                     Glitch Logo
                     <p class="upload-date">Loading date...</p>
                 </div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-time="May 10, 2026 • 12:45">
                 <img src="assets/art2.jpg" alt="Artwork 2">
                 <div class="gallery-overlay">
                     Nostalgic World
                     <p class="upload-date">Loading date...</p>
                 </div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-time="May 10, 2026 • 12:45">
                 <img src="assets/art3.jpg" alt="Artwork 3">
                 <div class="gallery-overlay">
                     Evening Village
                 <p class="upload-date">Loading date...</p>
                 </div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-time="May 10, 2026 • 12:45">
                 <img src="assets/art4.gif" alt="Artwork 4">
                 <div class="gallery-overlay">
                     Logo Animation
@@ -69,7 +69,7 @@
                     </div>
             </div>
 
-            <div class="gallery-item">
+            <div class="gallery-item" data-time="May 10, 2026 • 12:45">
                 <img src="assets/art5.jpg" alt="Artwork 5">
                 <div class="gallery-overlay">
                     Hill
@@ -88,38 +88,43 @@
         const menuBtn = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
-        // ==========================================
-// 🕰️ AUTOMATIC FILE DATE SYNC
 // ==========================================
-document.querySelectorAll('.gallery-item').forEach(item => {
-    const img = item.querySelector('img');
-    const dateDisplay = item.querySelector('.upload-date');
-    
-    if (img && dateDisplay) {
-        const filePath = img.getAttribute('src');
-
-        // Ask the server for the "HEAD" info of the image file
-        fetch(filePath, { method: 'HEAD' })
+        // 1. GLOBAL PAGE UPDATE TIME (Automatic)
+        // ==========================================
+        // This asks the server when the website itself was last updated
+        fetch(window.location.href, { method: 'HEAD' })
             .then(response => {
                 const lastModified = response.headers.get('Last-Modified');
+                const globalDisplay = document.getElementById('global-last-updated');
                 
-                if (lastModified) {
+                if (lastModified && globalDisplay) {
                     const d = new Date(lastModified);
-                    
-                    // Format: "May 10, 2026 • 12:45"
                     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-
-                    dateDisplay.innerHTML = `UPLOAD TIME: ${dateStr} • ${timeStr}`;
-                } else {
-                    dateDisplay.innerHTML = "DATE: LOCAL_FILE";
+                    globalDisplay.innerHTML = `GALLERY UPDATED: ${dateStr} • ${timeStr}`;
                 }
-            })
-            .catch(() => {
-                dateDisplay.innerHTML = "SYNC_ERROR";
+            }).catch(() => {
+                document.getElementById('global-last-updated').innerHTML = "GALLERY UPDATED: LIVE";
             });
-    }
-});
+
+        // ==========================================
+        // 2. INDIVIDUAL ARTWORK DATES (Manual)
+        // ==========================================
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            const dateDisplay = item.querySelector('.upload-date');
+            
+            // This looks for the data-time="..." you type in the HTML
+            const manualTime = item.getAttribute('data-time'); 
+            
+            if (dateDisplay) {
+                if (manualTime) {
+                    dateDisplay.innerHTML = `UPLOAD TIME: ${manualTime}`;
+                } else {
+                    // Friendly reminder if you forget to add the data-time!
+                    dateDisplay.innerHTML = "UPLOAD TIME: DATE NOT SET"; 
+                }
+            }
+        });
     </script>
 </body>
 </html>
