@@ -102,7 +102,7 @@ document.querySelectorAll('.gallery-item').forEach(item => {
                     const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     const timeStr = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
 
-                    dateDisplay.innerHTML = `SERVER SYNC: ${dateStr} • ${timeStr}`;
+                    dateDisplay.innerHTML = `UPLOAD TIME: ${dateStr} • ${timeStr}`;
                 } else {
                     dateDisplay.innerHTML = "DATE: LOCAL_FILE";
                 }
