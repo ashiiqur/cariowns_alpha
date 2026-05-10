@@ -671,3 +671,27 @@ audio {
 .key.black:active, .key.black.active {
     background-color: #333;
 }
+/* --- PITCH CONTROL BUTTONS --- */
+#pitch-down, #pitch-up {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 2px solid #555;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Add a cool glowing hover effect that matches the orange title! */
+#pitch-down:hover, #pitch-up:hover {
+    background-color: #2a2a2a;
+    border-color: #ff9d00;
+    color: #ff9d00;
+    box-shadow: 0 0 8px rgba(255, 157, 0, 0.4);
+}
+
+/* Make them "press down" slightly when clicked */
+#pitch-down:active, #pitch-up:active {
+    transform: scale(0.95);
+}
