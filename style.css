@@ -215,30 +215,37 @@ audio {
 /* =========================================
    VISUALS PAGE STYLES 
    ========================================= */
+/* --- THE GALLERY GRID CONTAINER --- */
 .gallery-grid {
     display: grid;
-    grid-template-columns:repeat(auto-fit, minimax(250px, 1fr));
-    gap: 20px;
-    margin-top: 40px;
+    /* MAGIC MATH: This automatically creates columns that are at least 300px wide. 
+       If the screen is huge, it makes 3 or 4 columns. 
+       If it's a tiny phone, it forces them into 1 column! */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px; /* Space between the art pieces */
+    max-width: 1200px; /* Keeps the whole gallery neatly centered on huge monitors */
+    margin: 0 auto; 
+    padding: 20px;
 }
 
+/* --- THE GALLERY IMAGES --- */
 .gallery-item {
     position: relative;
-    overflow: hidden;
-    border-radius: 12px;
-    aspect-ratio: 1 / 1;
+    width: 100%;
 }
 
 .gallery-item img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+    height: auto;
+    border-radius: 15px; /* Keeps your smooth corners */
+    display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease; /* Optional: sets up a hover effect */
 }
 
-/* Zooms the image in slightly when you hover */
+/* Optional: Make the art pop up slightly when you hover over it! */
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.03);
 }
 
 /* The dark bar that slides up with the title */
