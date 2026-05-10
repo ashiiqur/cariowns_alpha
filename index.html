@@ -313,10 +313,22 @@
                 }
             }
 
-            // 3. Random choice
+           // 3. Strategic choice (Center -> Corners -> Edges)
             if (selectedIdx === -1) {
-                if (board[4] === "") selectedIdx = 4;
-                else selectedIdx = available[Math.floor(Math.random() * available.length)];
+                // First priority: Take the center if it's open
+                if (board[4] === "") {
+                    selectedIdx = 4;
+                } else {
+                    // Second priority: Try to take an open corner
+                    const corners = [0, 2, 6, 8].filter(idx => board[idx] === "");
+                    if (corners.length > 0) {
+                        // Pick a random available corner
+                        selectedIdx = corners[Math.floor(Math.random() * corners.length)];
+                    } else {
+                        // Last priority: Take whatever edge is left
+                        selectedIdx = available[Math.floor(Math.random() * available.length)];
+                    }
+                }
             }
 
             placePiece(selectedIdx, "O", computerMoves);
