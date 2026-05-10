@@ -464,23 +464,45 @@
             "C5": 523.25
         };
 
-        // This object acts as the piano's "memory" so it knows which keys are currently held down
+        // This object acts as the piano's "memory"
         const activeNotes = {};
+        
+        // --- NEW PITCH SHIFT LOGIC ---
+        let currentPitchShift = 0; // 0 is normal, 1 is an octave up, -1 is an octave down
+        const pitchDisplay = document.getElementById('pitch-display');
 
+        document.getElementById('pitch-down').addEventListener('click', () => {
+            if (currentPitchShift > -2) currentPitchShift--; // Limit to 2 octaves down
+            updatePitchDisplay();
+        });
+
+        document.getElementById('pitch-up').addEventListener('click', () => {
+            if (currentPitchShift < 2) currentPitchShift++; // Limit to 2 octaves up
+            updatePitchDisplay();
+        });
+
+        function updatePitchDisplay() {
+            if (currentPitchShift === 0) pitchDisplay.innerText = "Normal Pitch";
+            else if (currentPitchShift > 0) pitchDisplay.innerText = `Pitch +${currentPitchShift}`;
+            else pitchDisplay.innerText = `Pitch ${currentPitchShift}`;
+        }
+
+        // --- UPGRADED START NOTE FUNCTION ---
         function startNote(note) {
             if (!frequencies[note]) return;
             if (audioCtx.state === 'suspended') audioCtx.resume();
             
-            // If the note is already playing, don't restart it
             if (activeNotes[note]) return;
 
             const osc = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             
             osc.type = 'triangle'; 
-            osc.frequency.setValueAtTime(frequencies[note], audioCtx.currentTime);
             
-            // Start at full volume and KEEP IT THERE as long as the key is held
+            // MAGIC MATH: Multiply the frequency by 2 to go up an octave, divide by 2 to go down!
+            const shiftedFrequency = frequencies[note] * Math.pow(2, currentPitchShift);
+            osc.frequency.setValueAtTime(shiftedFrequency, audioCtx.currentTime);
+            
             gainNode.gain.setValueAtTime(1, audioCtx.currentTime);
             
             osc.connect(gainNode);
@@ -488,7 +510,6 @@
             
             osc.start();
             
-            // Save the sound to memory so we can stop it later
             activeNotes[note] = { osc, gainNode };
         }
 
