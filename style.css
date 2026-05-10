@@ -743,3 +743,22 @@ audio {
         margin-right: -4%;
     }
 }
+/* --- GALLERY DATE STYLING --- */
+.upload-date {
+    font-family: monospace;
+    font-size: 0.7rem;
+    color: #00a8ff; /* Using a blue tint to match your glitch theme */
+    margin-top: 8px;
+    text-shadow: 1px 1px 0px #ff0000; /* Subtle glitch shadow */
+    
+    /* Hidden state */
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.3s ease-in-out;
+}
+
+/* --- SHOW DATE ON HOVER --- */
+.gallery-item:hover .upload-date {
+    opacity: 1;
+    transform: translateY(0);
+}
