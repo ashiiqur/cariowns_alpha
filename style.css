@@ -671,43 +671,40 @@ audio {
 .key.black:active, .key.black.active {
     background-color: #333;
 }
-/* --- PITCH CONTROL BUTTONS (PRO ARCADE THEME) --- */
+/* --- PITCH CONTROL BUTTONS (MATCHING ATTACK/HEAL BUTTONS) --- */
 #pitch-down, #pitch-up {
-    background-color: transparent; /* Removes the bulky gray box */
-    color: #ff9d00; /* Matches your mini-piano title */
-    border: 2px solid #ff9d00;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9rem;
-    font-weight: bold;
-    text-transform: uppercase; /* Makes it look like arcade text */
-    letter-spacing: 1px;
+    background-color: #111; /* Dark background */
+    color: #ffffff; /* White text */
+    border: 2px solid #444; /* Solid gray border */
+    border-radius: 0px; /* Sharp corners */
+    font-family: sans-serif; /* Matches the clean font in your image */
+    font-size: 1rem;
     padding: 10px 20px;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(255, 157, 0, 0.2), inset 0 0 5px rgba(255, 157, 0, 0.2); /* Subtle neon glow */
-    transition: all 0.2s ease-in-out;
+    
+    /* This creates the exact red/blue glitch effect seen on your Attack button */
+    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
+    
+    transition: background-color 0.1s ease;
 }
 
-/* Neon Glow Hover Effect */
 #pitch-down:hover, #pitch-up:hover {
-    background-color: #ff9d00;
-    color: #111; /* Text turns dark when button lights up */
-    box-shadow: 0 0 15px rgba(255, 157, 0, 0.6), inset 0 0 10px rgba(255, 157, 0, 0.4);
-    transform: translateY(-2px); /* Lifts the button up slightly */
+    background-color: #222; /* Slight lighten when hovering */
+    border-color: #666;
 }
 
-/* Button Press Effect */
 #pitch-down:active, #pitch-up:active {
-    transform: translateY(1px); /* Pushes it down physically */
-    box-shadow: 0 0 5px rgba(255, 157, 0, 0.4);
+    background-color: #000;
+    border-color: #333;
 }
 
-/* Stabilize the Middle Text */
+/* Keeps the center text stable and matching */
 #pitch-display {
     display: inline-block;
-    min-width: 150px; /* Prevents buttons from twitching when text changes */
+    min-width: 150px; 
     text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    color: #fff;
+    font-family: sans-serif;
+    font-weight: bold;
+    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
 }
