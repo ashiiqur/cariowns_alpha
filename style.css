@@ -743,22 +743,18 @@ audio {
         margin-right: -4%;
     }
 }
-/* --- GALLERY DATE STYLING --- */
+/* --- GALLERY DATE STYLING (CLEAN & MATCHING TITLE) --- */
 .upload-date {
-    font-family: monospace;
-    font-size: 0.7rem;
-    color: #00a8ff; /* Using a blue tint to match your glitch theme */
-    margin-top: 8px;
-    text-shadow: 1px 1px 0px #ff0000; /* Subtle glitch shadow */
+    /* --- THE FIX: We inherited these from your .gallery-overlay title! --- */
+    font-family: sans-serif; /* Removes monospace, uses the same clean font as the title */
+    font-size: 0.7rem; /* Keep it slightly smaller than the title */
+    color: #ffffff; /* Sets the color to pure white, just like the title */
+    text-shadow: none; /* ABSOLUTELY removes the red/blue glitch shadow */
     
-    /* Hidden state */
+    margin-top: 8px; /* Spaces it out from the title */
+
+    /* These handle the smooth hover animation - leave these as they were */
     opacity: 0;
     transform: translateY(5px);
     transition: all 0.3s ease-in-out;
-}
-
-/* --- SHOW DATE ON HOVER --- */
-.gallery-item:hover .upload-date {
-    opacity: 1;
-    transform: translateY(0);
 }
