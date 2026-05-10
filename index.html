@@ -191,18 +191,22 @@
             navLinks.classList.toggle('active');
         });
     </script>
-<!-- Infinite Tic-Tac-Toe Logic Script -->
-    <script>
+<script>
         const cells = document.querySelectorAll('.cell');
         const statusText = document.getElementById('game-status');
         const resetButton = document.getElementById('reset-game');
-        const firstPlayerSelect = document.getElementById('first-player'); // The new dropdown
+        const firstPlayerSelect = document.getElementById('first-player');
+        const gameModeSelect = document.getElementById('game-mode'); // The new Game Mode dropdown
         
         let board = ["", "", "", "", "", "", "", "", ""];
         let playerMoves = []; 
-        let computerMoves = []; 
+        let computerMoves = []; // We will also use this for Player 2's moves!
         let gameActive = true;
         let isComputerThinking = false; 
+        
+        // --- NEW 2-PLAYER VARIABLES ---
+        let isTwoPlayer = false; 
+        let currentPlayer = "X"; // Tracks whose turn it is in 2P mode
 
         const winConditions = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -212,21 +216,48 @@
 
         cells.forEach(cell => cell.addEventListener('click', handleCellClick));
         resetButton.addEventListener('click', resetGame);
-        firstPlayerSelect.addEventListener('change', resetGame); // Restarts if you change who goes first
+        firstPlayerSelect.addEventListener('change', resetGame); 
+
+        // --- NEW GAME MODE LISTENER ---
+        gameModeSelect.addEventListener('change', (e) => {
+            isTwoPlayer = (e.target.value === '2p');
+            // Hide the "Who plays first" dropdown in 2P mode to avoid confusion
+            firstPlayerSelect.parentElement.style.display = isTwoPlayer ? 'none' : 'block';
+            resetGame();
+        });
 
         function handleCellClick(e) {
             const index = e.target.getAttribute('data-index');
             
             if (board[index] !== "" || !gameActive || isComputerThinking) return;
 
-            placePiece(index, "X", playerMoves);
-            checkWinner();
+            if (isTwoPlayer) {
+                // ==========================
+                // 2-PLAYER LOCAL MODE LOGIC
+                // ==========================
+                let currentQueue = currentPlayer === "X" ? playerMoves : computerMoves;
+                placePiece(index, currentPlayer, currentQueue);
+                checkWinner();
 
-            if (gameActive) {
-                isComputerThinking = true; 
-                statusText.innerText = "Computer is thinking..."; // Added dynamic text
-                statusText.style.color = "#39E09B";
-                setTimeout(computerMove, 500); 
+                if (gameActive) {
+                    // Switch turns
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                    statusText.innerText = `Player ${currentPlayer}'s turn!`;
+                    statusText.style.color = currentPlayer === "X" ? "var(--text-color)" : "#39E09B";
+                }
+            } else {
+                // ==========================
+                // 1-PLAYER VS CPU LOGIC
+                // ==========================
+                placePiece(index, "X", playerMoves);
+                checkWinner();
+
+                if (gameActive) {
+                    isComputerThinking = true; 
+                    statusText.innerText = "Computer is thinking..."; 
+                    statusText.style.color = "#39E09B";
+                    setTimeout(computerMove, 500); 
+                }
             }
         }
 
@@ -292,7 +323,6 @@
             checkWinner();
             isComputerThinking = false; 
             
-            // Tells you it's your turn again!
             if (gameActive) {
                 statusText.innerText = "Your turn (X)!";
                 statusText.style.color = "var(--text-color)";
@@ -313,7 +343,11 @@
             }
 
             if (roundWon) {
-                statusText.innerText = winner === "X" ? "You Win! 🎉" : "Computer Wins! 🤖";
+                if (isTwoPlayer) {
+                    statusText.innerText = `Player ${winner} Wins! 🎉`;
+                } else {
+                    statusText.innerText = winner === "X" ? "You Win! 🎉" : "Computer Wins! 🤖";
+                }
                 statusText.style.color = winner === "X" ? "var(--accent-color)" : "#39E09B";
                 gameActive = false;
                 cells.forEach(cell => cell.classList.remove('fading'));
@@ -326,21 +360,26 @@
             computerMoves = [];
             gameActive = true;
             isComputerThinking = false;
+            currentPlayer = "X"; // Always reset to X
             
             cells.forEach(cell => {
                 cell.innerText = "";
                 cell.classList.remove("x", "o", "fading");
             });
 
-            // Logic for checking who goes first
-            if (firstPlayerSelect.value === 'computer') {
-                statusText.innerText = "Computer is thinking...";
-                statusText.style.color = "#39E09B";
-                isComputerThinking = true;
-                setTimeout(computerMove, 500); // Computer takes the first turn!
-            } else {
-                statusText.innerText = "You vs. Computer. Your turn (X)!";
+            if (isTwoPlayer) {
+                statusText.innerText = "Player X's turn!";
                 statusText.style.color = "var(--text-color)";
+            } else {
+                if (firstPlayerSelect.value === 'computer') {
+                    statusText.innerText = "Computer is thinking...";
+                    statusText.style.color = "#39E09B";
+                    isComputerThinking = true;
+                    setTimeout(computerMove, 500); 
+                } else {
+                    statusText.innerText = "You vs. Computer. Your turn (X)!";
+                    statusText.style.color = "var(--text-color)";
+                }
             }
         }
     </script>
