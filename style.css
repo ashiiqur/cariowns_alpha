@@ -5,8 +5,10 @@
     --accent-color: #ff424d; /* A vibrant accent for links/buttons */
 }
 
-body {
+html, body {
     margin: 0;
+    padding: 0;
+    width: 100%;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -718,4 +720,21 @@ audio {
 #pitch-down:active, #pitch-up:active {
     background-color: #000;
     border-color: #333;
+}
+/* --- MOBILE RESPONSIVE PIANO FIX --- */
+@media (max-width: 500px) {
+    .piano-container {
+        padding: 20px 5px; /* Reduces the bulky padding on phone screens */
+    }
+    
+    .key.white {
+        width: 12.5%; /* 100% divided by 8 keys = perfect fit! */
+        font-size: 0.9rem; /* Slightly smaller text for keys */
+    }
+    
+    .key.black {
+        width: 8%; /* Shrink black keys proportionally */
+        margin-left: -4%; /* Adjust negative margin to keep them centered */
+        margin-right: -4%;
+    }
 }
