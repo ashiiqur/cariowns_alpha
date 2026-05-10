@@ -698,14 +698,15 @@ audio {
 /* --- 2. PITCH DISPLAY (Stops buttons from moving!) --- */
 #pitch-display {
     display: inline-block;
-    width: 120px; /* 🔒 MAGIC FIX: Fixed width locks the spacing so buttons never shift! */
+    width: 120px; 
     text-align: center;
     color: #fff;
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-weight: bold;
     font-size: 0.9rem;
-    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
-    flex-shrink: 0; /* Stops the text area from getting squished on small phones */
+    flex-shrink: 0; 
 }
 
 /* --- 3. PITCH BUTTONS --- */
@@ -714,12 +715,13 @@ audio {
     color: #ffffff;
     border: 2px solid #444;
     border-radius: 0px;
-    font-family: sans-serif;
-    font-size: 0.8rem; /* Slightly smaller to fit mobile screens perfectly */
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 0.8rem; 
     padding: 8px 12px;
     cursor: pointer;
-    text-shadow: -1px 0px 0px #00a8ff, 1px 0px 0px #ff0000; 
-    white-space: nowrap; /* Stops the text inside the button from wrapping */
+    white-space: nowrap; 
     transition: background-color 0.1s ease;
 }
 
