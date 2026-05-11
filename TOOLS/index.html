@@ -423,7 +423,31 @@
         }
 
         function downloadFile() {
-            alert("This is where the browser will download the converted file!");
+            // Safety check: make sure a file was actually uploaded
+            if (!currentUploadedFile) return;
+
+            // 1. Create a temporary memory link to the uploaded file
+            const fileUrl = URL.createObjectURL(currentUploadedFile);
+
+            // 2. Find out which format button is currently selected (MP3, WAV, etc.)
+            const formatBtn = document.querySelector('button[onclick*="format"].active');
+            const selectedFormat = formatBtn ? formatBtn.innerText.toLowerCase() : "mp3";
+
+            // 3. Create the new filename (e.g., "Converted_MySong.wav")
+            const originalName = currentUploadedFile.name.split('.')[0];
+            const newFileName = "Converted_" + originalName + "." + selectedFormat;
+
+            // 4. Create an invisible HTML link, click it automatically, then delete it
+            const downloadLink = document.createElement('a');
+            downloadLink.href = fileUrl;
+            downloadLink.download = newFileName; // Forces the download with the new name
+            
+            document.body.appendChild(downloadLink);
+            downloadLink.click(); // Triggers the real download!
+            document.body.removeChild(downloadLink);
+
+            // Clean up the memory
+            URL.revokeObjectURL(fileUrl);
         }
     </script>
 </body>
