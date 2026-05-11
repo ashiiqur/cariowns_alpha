@@ -168,14 +168,27 @@
                         <h3>Conversion Complete!</h3>
                         <p id="complete-filename" style="color: #888; font-size: 14px; margin-top: 5px;">filename.mp3</p>
                     </div>
+
+                    <div style="display: flex; justify-content: space-between; background-color: #222; border-radius: 8px; padding: 15px 25px; margin-bottom: 20px; text-align: left; font-size: 13px;">
+                        <div>
+                            <h5 style="color: #aaa; margin-bottom: 8px; font-size: 14px;">Original File</h5>
+                            <p style="color: #888; margin: 3px 0;">Format: <span id="detail-orig-format" style="color:#fff; font-weight:bold;">...</span></p>
+                            <p style="color: #888; margin: 3px 0;">Size: <span id="detail-orig-size" style="color:#fff; font-weight:bold;">...</span></p>
+                        </div>
+                        <div style="text-align: right;">
+                            <h5 style="color: #ff424d; margin-bottom: 8px; font-size: 14px;">Converted Details</h5>
+                            <p style="color: #888; margin: 3px 0;">Format: <span id="detail-conv-format" style="color:#fff; font-weight:bold;">...</span></p>
+                            <p style="color: #888; margin: 3px 0;">Bitrate: <span id="detail-conv-bitrate" style="color:#fff; font-weight:bold;">...</span></p>
+                        </div>
+                    </div>
                     
                     <div id="waveform-result" style="margin-bottom: 15px;"></div>
                     
                     <button class="play-btn" id="play-btn-result" onclick="togglePlay('result')">▶</button>
                     
                     <button class="convert-btn" style="background-color: #ff424d; width: 100%; margin-top: 20px;" onclick="downloadFile()">
-    ↓ Download Converted File
-</button>
+                        ↓ Download Converted File
+                    </button>
                 </div>
             </div>
 
