@@ -45,10 +45,87 @@
             <button class="tab-btn" onclick="openTab('gif-tools', this)">GIF</button>
         </div>
 
-        <div id="audio-tools" class="tool-section">
-            <p style="color: #ff424d; font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 50px; text-transform: uppercase;">
-                ( Coming Soon: Audio Tools )
+       <div id="audio-tools" class="tool-section">
+            <h2 style="margin-bottom: 5px;">Online Audio Converter</h2>
+            <p style="color: #ff424d; font-size: 13px; margin-bottom: 30px; letter-spacing: 1px;">
+                ⚠️ NOTICE: On refresh you will lose all data and uploaded files.
             </p>
+
+            <div class="upload-area" id="audio-dropzone" onclick="document.getElementById('audio-file').click()">
+                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ff424d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <h3 id="upload-text">Drop your audio or video file here</h3>
+                <p>or click to browse</p>
+                <input type="file" id="audio-file" hidden accept="audio/*,video/*">
+            </div>
+
+            <div class="audio-settings-group">
+                <h4 style="margin-bottom: 15px;">Output Format</h4>
+                
+                <div style="margin-bottom: 15px;">
+                    <span class="format-badge lossy">LOSSY <small style="color: #888;">Smaller files</small></span>
+                    <div class="format-grid">
+                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'format')">MP3</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AAC</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">M4A</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">Opus</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">OGG</button>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="format-badge lossless" style="color: #4CAF50;">LOSSLESS <small style="color: #888;">Full quality</small></span>
+                    <div class="format-grid">
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">FLAC</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">WAV</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AIFF</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="advanced-toggle" onclick="toggleAdvancedSettings()">
+                Advanced Conversion Settings <span id="adv-arrow">⌄</span>
+            </div>
+
+            <div id="advanced-panel" class="advanced-panel">
+                
+                <div class="adv-section">
+                    <h5 style="margin-bottom: 10px; color: #ccc;">Channels</h5>
+                    <div class="format-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'channel')">Original</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Mono</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Stereo</button>
+                    </div>
+                </div>
+
+                <div class="adv-section">
+                    <h5 style="margin-bottom: 10px; color: #ccc;">Sample Rate</h5>
+                    <div class="format-grid" style="grid-template-columns: repeat(4, 1fr);">
+                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'sample')">Original</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">32 kHz</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">44.1 kHz</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">48 kHz</button>
+                    </div>
+                </div>
+
+                <div class="adv-section">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <h5 style="color: #ccc;">Bitrate</h5>
+                        <span id="bitrate-display" style="color: #ff424d; font-weight: bold;">256 kbps</span>
+                    </div>
+                    <div class="format-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 15px;">
+                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'bitrate-type')">CBR</button>
+                        <button class="audio-btn" onclick="selectAudioBtn(this, 'bitrate-type')">VBR</button>
+                    </div>
+                    <input type="range" min="64" max="320" step="32" value="256" class="audio-slider" id="bitrate-slider" oninput="updateBitrate(this.value)">
+                </div>
+
+            </div>
+
+            <button class="convert-btn">Convert File</button>
         </div>
 
         <div id="image-tools" class="tool-section" style="display: none;">
