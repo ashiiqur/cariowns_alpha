@@ -175,6 +175,43 @@
             document.getElementById(tabName).style.display = "block";
             buttonElement.classList.add("active");
         }
+        // ==========================================
+        // 3. Audio Converter Logic
+        // ==========================================
+
+        // Update file upload text when a file is selected
+        document.getElementById('audio-file').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : "Drop your audio or video file here";
+            document.getElementById('upload-text').innerText = fileName;
+        });
+
+        // Toggle Advanced Settings Panel
+        function toggleAdvancedSettings() {
+            const panel = document.getElementById('advanced-panel');
+            const arrow = document.getElementById('adv-arrow');
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                arrow.innerText = "⌄";
+            } else {
+                panel.style.display = "block";
+                arrow.innerText = "⌃";
+            }
+        }
+
+        // Logic to make only ONE button active per group
+        function selectAudioBtn(clickedBtn, groupName) {
+            // Find all buttons that share the same onclick function argument
+            const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
+            // Remove 'active' class from all of them
+            allBtns.forEach(btn => btn.classList.remove('active'));
+            // Add 'active' class to the one just clicked
+            clickedBtn.classList.add('active');
+        }
+
+        // Update the Bitrate text when slider moves
+        function updateBitrate(value) {
+            document.getElementById('bitrate-display').innerText = value + " kbps";
+        }
     </script>
 </body>
 </html>
