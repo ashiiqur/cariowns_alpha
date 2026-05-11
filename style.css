@@ -989,20 +989,25 @@ audio {
 }
 
 /* Waveform Play Button */
+/* Waveform Play Button */
 .play-btn {
-    background-color: #ff424d;
-    color: white;
+    background-color: transparent; /* Removes the solid red circle */
+    color: #ff424d; /* Makes the play icon itself red */
     border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    font-size: 18px;
+    font-size: 28px; /* Makes the icon larger since the circle is gone */
     cursor: pointer;
-    display: flex;
+    padding: 5px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: transform 0.2s ease, color 0.2s ease;
 }
-.play-btn:hover { background-color: #ff2a38; }
+
+.play-btn:hover { 
+    background-color: transparent;
+    color: #fff; /* Turns the icon white when hovered */
+    transform: scale(1.15); /* Adds a subtle "pop" animation on hover */
+}
 
 /* Success Checkmark */
 .success-icon {
