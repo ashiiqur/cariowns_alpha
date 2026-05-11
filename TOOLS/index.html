@@ -255,18 +255,14 @@
             allBtns.forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
             
-            if (document.getElementById('state-complete').classList.contains('active-state')) {
-                updateUI('ready'); 
-            }
+            // (The code that forced the reset was removed from here!)
         }
 
         function updateBitrate(value) {
             document.getElementById('bitrate-display').innerText = value + " kbps";
-            if (document.getElementById('state-complete').classList.contains('active-state')) {
-                updateUI('ready'); 
-            }
+            
+            // (The code that forced the reset was removed from here too!)
         }
-
         // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
