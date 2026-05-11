@@ -831,3 +831,97 @@ audio {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* --- Audio Converter UI --- */
+.upload-area {
+    border: 2px dashed #444;
+    border-radius: 15px;
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+}
+.upload-area:hover {
+    border-color: #ff424d;
+    background-color: #222;
+}
+.upload-area h3 { margin-top: 15px; font-size: 18px; }
+.upload-area p { color: #888; margin-top: 5px; }
+
+.audio-settings-group {
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.format-badge {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #ff424d;
+}
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+}
+.audio-btn {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.audio-btn:hover { background-color: #3a3a3a; }
+.audio-btn.active {
+    background-color: #ff424d;
+    color: white;
+}
+
+.advanced-toggle {
+    text-align: center;
+    color: #aaa;
+    cursor: pointer;
+    margin: 20px 0;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.advanced-toggle:hover { color: #fff; }
+.advanced-panel {
+    display: none; /* Hidden by default */
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+.adv-section { margin-bottom: 25px; }
+
+/* Custom Slider */
+.audio-slider {
+    width: 100%;
+    accent-color: #ff424d; /* Makes the slider red to match theme */
+    cursor: pointer;
+}
+
+.convert-btn {
+    width: 100%;
+    background-color: #ff424d;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    padding: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.convert-btn:hover {
+    background-color: #ff2a38;
+    transform: translateY(-2px);
+}
