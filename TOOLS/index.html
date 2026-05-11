@@ -152,6 +152,9 @@
                     </div>
                 </div>
             </div>
+           </div> <button class="convert-btn" id="main-convert-btn" onclick="startConversion()" style="display: none; margin: 25px 0;">Convert File</button>
+
+            <div class="ui-state" id="state-converting">
             
             <div class="ui-state" id="state-converting">
                 <div class="progress-box" style="text-align: left; padding: 30px;">
@@ -192,7 +195,6 @@
                 </div>
             </div>
 
-            <button class="convert-btn" id="main-convert-btn" onclick="startConversion()">Convert File</button>
         </div>
 
         <div id="image-tools" class="tool-section" style="display: none;">
@@ -259,24 +261,15 @@
             }
         }
 
-        function selectAudioBtn(clickedBtn, groupName) {
+ function selectAudioBtn(clickedBtn, groupName) {
             const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
             allBtns.forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
-            
-            // If they change a setting after conversion, hide the success box and prepare to convert again
-            if (document.getElementById('state-complete').classList.contains('active-state')) {
-                updateUI('ready'); 
-            }
         }
 
         function updateBitrate(value) {
             document.getElementById('bitrate-display').innerText = value + " kbps";
-            if (document.getElementById('state-complete').classList.contains('active-state')) {
-                updateUI('ready'); 
-            }
         }
-
         // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
