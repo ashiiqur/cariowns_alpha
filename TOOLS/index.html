@@ -51,81 +51,130 @@
                 NOTICE: On refresh you will lose all data and uploaded files.
             </p>
 
-            <div class="upload-area" id="audio-dropzone" onclick="document.getElementById('audio-file').click()">
-                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ff424d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="17 8 12 3 7 8"></polyline>
-                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                </svg>
-                <h3 id="upload-text">Drop your audio or video file here</h3>
-                <p>or click to browse</p>
-                <input type="file" id="audio-file" hidden accept="audio/*,video/*">
-            </div>
-
-            <div class="audio-settings-group">
-                <h4 style="margin-bottom: 15px;">Output Format</h4>
+            <div id="converter-ui-container" style="margin-bottom: 30px;">
                 
-                <div style="margin-bottom: 15px;">
-                    <span class="format-badge lossy">LOSSY <small style="color: #888;">Smaller files</small></span>
-                    <div class="format-grid">
-                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'format')">MP3</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AAC</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">M4A</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">Opus</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">OGG</button>
+                <div class="ui-state active-state" id="state-upload">
+                    <div class="upload-area" onclick="document.getElementById('audio-file').click()">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#ff424d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h3>Drop your audio or video file here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="audio-file" hidden accept="audio/*">
                     </div>
                 </div>
 
-                <div>
-                    <span class="format-badge lossless" style="color: #4CAF50;">LOSSLESS <small style="color: #888;">Full quality</small></span>
-                    <div class="format-grid">
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">FLAC</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">WAV</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AIFF</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="advanced-toggle" onclick="toggleAdvancedSettings()">
-                Advanced Conversion Settings <span id="adv-arrow">⌄</span>
-            </div>
-
-            <div id="advanced-panel" class="advanced-panel">
-                
-                <div class="adv-section">
-                    <h5 style="margin-bottom: 10px; color: #ccc;">Channels</h5>
-                    <div class="format-grid" style="grid-template-columns: repeat(3, 1fr);">
-                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'channel')">Original</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Mono</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Stereo</button>
+                <div class="ui-state" id="state-uploading">
+                    <div class="progress-box">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff424d" stroke-width="2" style="margin-bottom: 15px; display: inline-block;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h4 id="upload-filename" style="margin-bottom: 10px;">filename.mp3</h4>
+                        <h2 id="upload-percent" style="color: #ff424d; font-size: 32px; margin-bottom: 15px;">0%</h2>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="upload-fill"></div></div>
+                        <p style="color: #888; font-size: 12px; margin-top: 10px;">Uploading...</p>
                     </div>
                 </div>
 
-                <div class="adv-section">
-                    <h5 style="margin-bottom: 10px; color: #ccc;">Sample Rate</h5>
-                    <div class="format-grid" style="grid-template-columns: repeat(4, 1fr);">
-                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'sample')">Original</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">32 kHz</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">44.1 kHz</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">48 kHz</button>
+                <div class="ui-state" id="state-ready">
+                    <div class="waveform-box">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <span id="ready-filename" style="font-weight: bold;">filename.mp3</span>
+                            <span style="color: #ff424d; cursor: pointer; font-size: 14px;" onclick="resetConverter()">Change</span>
+                        </div>
+                        <div id="waveform-container" style="margin-bottom: 15px;"></div>
+                        <button class="play-btn" onclick="togglePlay()">▶</button>
                     </div>
-                </div>
-
-                <div class="adv-section">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <h5 style="color: #ccc;">Bitrate</h5>
-                        <span id="bitrate-display" style="color: #ff424d; font-weight: bold;">256 kbps</span>
-                    </div>
-                    <div class="format-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 15px;">
-                        <button class="audio-btn active" onclick="selectAudioBtn(this, 'bitrate-type')">CBR</button>
-                        <button class="audio-btn" onclick="selectAudioBtn(this, 'bitrate-type')">VBR</button>
-                    </div>
-                    <input type="range" min="64" max="320" step="32" value="256" class="audio-slider" id="bitrate-slider" oninput="updateBitrate(this.value)">
                 </div>
 
             </div>
 
-            <button class="convert-btn">Convert File</button>
+            <div id="settings-container">
+                <div class="audio-settings-group">
+                    <h4 style="margin-bottom: 15px;">Output Format</h4>
+                    <div style="margin-bottom: 15px;">
+                        <span class="format-badge lossy">LOSSY <small style="color: #888;">Smaller files</small></span>
+                        <div class="format-grid">
+                            <button class="audio-btn active" onclick="selectAudioBtn(this, 'format')">MP3</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AAC</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">M4A</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">Opus</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">OGG</button>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="format-badge lossless" style="color: #4CAF50;">LOSSLESS <small style="color: #888;">Full quality</small></span>
+                        <div class="format-grid">
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">FLAC</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">WAV</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'format')">AIFF</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="advanced-toggle" onclick="toggleAdvancedSettings()">
+                    Advanced Conversion Settings <span id="adv-arrow">⌄</span>
+                </div>
+
+                <div id="advanced-panel" class="advanced-panel">
+                    <div class="adv-section">
+                        <h5 style="margin-bottom: 10px; color: #ccc;">Channels</h5>
+                        <div class="format-grid" style="grid-template-columns: repeat(3, 1fr);">
+                            <button class="audio-btn active" onclick="selectAudioBtn(this, 'channel')">Original</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Mono</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'channel')">Stereo</button>
+                        </div>
+                    </div>
+                    <div class="adv-section">
+                        <h5 style="margin-bottom: 10px; color: #ccc;">Sample Rate</h5>
+                        <div class="format-grid" style="grid-template-columns: repeat(4, 1fr);">
+                            <button class="audio-btn active" onclick="selectAudioBtn(this, 'sample')">Original</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">32 kHz</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">44.1 kHz</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'sample')">48 kHz</button>
+                        </div>
+                    </div>
+                    <div class="adv-section">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <h5 style="color: #ccc;">Bitrate</h5>
+                            <span id="bitrate-display" style="color: #ff424d; font-weight: bold;">256 kbps</span>
+                        </div>
+                        <div class="format-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 15px;">
+                            <button class="audio-btn active" onclick="selectAudioBtn(this, 'bitrate-type')">CBR</button>
+                            <button class="audio-btn" onclick="selectAudioBtn(this, 'bitrate-type')">VBR</button>
+                        </div>
+                        <input type="range" min="64" max="320" step="32" value="256" class="audio-slider" id="bitrate-slider" oninput="updateBitrate(this.value)">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ui-state" id="state-converting">
+                <div class="progress-box" style="text-align: left; padding: 30px;">
+                    <h4 style="margin-bottom: 15px;">Converting...</h4>
+                    <div class="progress-bar-bg"><div class="progress-bar-fill" id="convert-fill"></div></div>
+                    <p id="convert-percent" style="color: #888; font-size: 14px; margin-top: 10px;">0%</p>
+                </div>
+            </div>
+
+            <div class="ui-state" id="state-complete">
+                <div class="success-box">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <div class="success-icon">✓</div>
+                        <h3>Conversion Complete!</h3>
+                        <p style="color: #888; font-size: 14px;">Simulated conversion finished.</p>
+                    </div>
+                    <div id="waveform-result" style="margin-bottom: 20px;"></div>
+                    <button class="convert-btn" style="background-color: #ff424d; width: 100%; margin-top: 20px;" onclick="resetConverter()">
+                        ↓ Download Converted File
+                    </button>
+                </div>
+            </div>
+
+            <button class="convert-btn" id="main-convert-btn" onclick="startConversion()">Convert File</button>
         </div>
 
         <div id="image-tools" class="tool-section" style="display: none;">
@@ -145,6 +194,7 @@
         <p>&copy; 2026 cariowns. All rights reserved.</p>
     </footer>
 
+    <script src="https://unpkg.com/wavesurfer.js@7"></script>
     <script>
         // 1. Mobile Menu (with added safety check)
         const menuBtn = document.querySelector('.menu-toggle');
