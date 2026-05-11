@@ -784,3 +784,50 @@ audio {
         margin: 0; 
     }
 }
+/* =========================================
+   MUSIC PAGE STYLES 
+   ========================================= */
+
+/* Container for the buttons */
+.tool-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+/* How the buttons look normally */
+.tab-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #333; 
+    padding: 10px 40px;
+    font-size: 16px;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 30px; 
+    transition: all 0.3s ease;
+}
+
+/* The Hover Effect */
+.tab-btn:hover {
+    border-color: #ff424d;
+    color: #ff424d;
+}
+
+/* The Active Button (The screen you are currently on) */
+.tab-btn.active {
+    background-color: #ff424d;
+    border-color: #ff424d;
+    color: #ffffff;
+}
+
+/* A smooth fade-in animation for the screens */
+.tool-section {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
