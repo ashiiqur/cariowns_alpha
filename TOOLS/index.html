@@ -216,35 +216,27 @@
 
     <script src="https://unpkg.com/wavesurfer.js@7"></script>
     <script>
-        // 1. Mobile Menu (with added safety check)
+        // 1. Mobile Menu
         const menuBtn = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
-        
         if (menuBtn && navLinks) {
             menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
         }
 
-        // 2. Tab Switcher Logic
+        // 2. Tab Switcher
         function openTab(tabName, buttonElement) {
-            // This line tells the browser console that the button was actually clicked
-            console.log("Button clicked! Opening:", tabName); 
-
-            // Hide all tool screens
             let sections = document.getElementsByClassName("tool-section");
             for (let i = 0; i < sections.length; i++) {
                 sections[i].style.display = "none";
             }
-            
-            // Remove the 'active' styling from all buttons
             let buttons = document.getElementsByClassName("tab-btn");
             for (let i = 0; i < buttons.length; i++) {
                 buttons[i].classList.remove("active");
             }
-            
-            // Show the selected screen and make that button red
             document.getElementById(tabName).style.display = "block";
             buttonElement.classList.add("active");
         }
+
         // ==========================================
         // 3. Audio Converter Logic & UI Flow
         // ==========================================
@@ -261,18 +253,27 @@
             }
         }
 
- function selectAudioBtn(clickedBtn, groupName) {
+        function selectAudioBtn(clickedBtn, groupName) {
             const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
             allBtns.forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
+            
+            if (document.getElementById('state-complete').classList.contains('active-state')) {
+                updateUI('ready'); 
+            }
         }
 
         function updateBitrate(value) {
             document.getElementById('bitrate-display').innerText = value + " kbps";
+            if (document.getElementById('state-complete').classList.contains('active-state')) {
+                updateUI('ready'); 
+            }
         }
+
         // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
+        let currentUploadedFile = null; // Safely stores the file so we never lose the details!
 
         function updateUI(phase) {
             const sections = ['state-upload', 'state-uploading', 'state-ready', 'state-converting', 'state-complete'];
@@ -299,21 +300,19 @@
                 if(settings) settings.style.display = 'block';
                 if(convertBtn) {
                     convertBtn.style.display = 'block';
-                    convertBtn.innerText = 'Convert File'; // Standard text
+                    convertBtn.innerText = 'Convert File';
                 }
             }
             else if (phase === 'converting') {
                 document.getElementById('state-ready').classList.add('active-state');
                 document.getElementById('state-converting').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
-                if(convertBtn) convertBtn.style.display = 'none'; // Hide while loading
+                if(convertBtn) convertBtn.style.display = 'none'; 
             }
             else if (phase === 'complete') {
                 document.getElementById('state-ready').classList.add('active-state');
                 document.getElementById('state-complete').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
-                
-                // THE FIX: Keep the convert button visible and change the text!
                 if(convertBtn) {
                     convertBtn.style.display = 'block';
                     convertBtn.innerText = 'Convert Again';
@@ -322,12 +321,12 @@
         }
 
         document.getElementById('audio-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
+            currentUploadedFile = e.target.files[0];
+            if (!currentUploadedFile) return;
 
-            document.getElementById('upload-filename').innerText = file.name;
-            document.getElementById('ready-filename').innerText = file.name;
-            document.getElementById('complete-filename').innerText = "Converted: " + file.name;
+            document.getElementById('upload-filename').innerText = currentUploadedFile.name;
+            document.getElementById('ready-filename').innerText = currentUploadedFile.name;
+            document.getElementById('complete-filename').innerText = "Converted: " + currentUploadedFile.name;
 
             updateUI('uploading');
 
@@ -337,7 +336,7 @@
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(uploadInterval);
-                    generateWaveform(file);
+                    generateWaveform(currentUploadedFile);
                     setTimeout(() => updateUI('ready'), 500);
                 }
                 document.getElementById('upload-percent').innerText = progress + '%';
@@ -390,6 +389,21 @@
             document.getElementById('convert-percent').innerText = '0%';
             document.getElementById('convert-fill').style.width = '0%';
 
+            // --- THIS IS THE CODE THAT UPDATES YOUR DETAILS BOX ---
+            if (currentUploadedFile) {
+                const origExt = currentUploadedFile.name.split('.').pop().toUpperCase();
+                const origSize = (currentUploadedFile.size / (1024 * 1024)).toFixed(2) + " MB";
+                document.getElementById('detail-orig-format').innerText = origExt;
+                document.getElementById('detail-orig-size').innerText = origSize;
+
+                const formatBtn = document.querySelector('button[onclick*="format"].active');
+                const selectedFormat = formatBtn ? formatBtn.innerText : "MP3";
+                const selectedBitrate = document.getElementById('bitrate-display').innerText;
+                
+                document.getElementById('detail-conv-format').innerText = selectedFormat;
+                document.getElementById('detail-conv-bitrate').innerText = selectedBitrate;
+            }
+
             let progress = 0;
             const convertInterval = setInterval(() => {
                 progress += Math.floor(Math.random() * 5) + 1; 
@@ -409,6 +423,7 @@
             
             document.getElementById('audio-file').value = '';
             document.getElementById('upload-fill').style.width = '0%';
+            currentUploadedFile = null;
             
             updateUI('init');
         }
