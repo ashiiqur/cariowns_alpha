@@ -212,6 +212,8 @@
     </footer>
 
     <script src="https://unpkg.com/wavesurfer.js@7"></script>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
+    <script src="https://unpkg.com/@ffmpeg/util@0.12.1/dist/umd/index.js"></script>
     <script>
         // 1. Mobile Menu
         const menuBtn = document.querySelector('.menu-toggle');
@@ -264,10 +266,16 @@
             
             // (The code that forced the reset was removed from here too!)
         }
-        // --- WAVEFORM & CONVERSION FLOW ---
+       // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
-        let currentUploadedFile = null; // Safely stores the file so we never lose the details!
+        let currentUploadedFile = null; 
+        
+        // NEW: Set up the real FFmpeg engine
+        const { FFmpeg } = window.FFmpeg;
+        const { fetchFile } = window.FFmpegUtil;
+        const ffmpeg = new FFmpeg();
+        let finalConvertedAudioData = null; // Stores the real converted file memory
 
         function updateUI(phase) {
             const sections = ['state-upload', 'state-uploading', 'state-ready', 'state-converting', 'state-complete'];
@@ -376,41 +384,71 @@
             if (type === 'result' && wavesurferResult) wavesurferResult.playPause();
         }
 
-        function startConversion() {
+        async function startConversion() {
             if (wavesurfer) wavesurfer.pause(); 
             updateUI('converting');
 
-            document.getElementById('convert-percent').innerText = '0%';
-            document.getElementById('convert-fill').style.width = '0%';
+            document.getElementById('convert-percent').innerText = 'Loading Engine...';
+            document.getElementById('convert-fill').style.width = '10%';
 
-            // --- THIS IS THE CODE THAT UPDATES YOUR DETAILS BOX ---
             if (currentUploadedFile) {
+                // Update your details box
                 const origExt = currentUploadedFile.name.split('.').pop().toUpperCase();
                 const origSize = (currentUploadedFile.size / (1024 * 1024)).toFixed(2) + " MB";
                 document.getElementById('detail-orig-format').innerText = origExt;
                 document.getElementById('detail-orig-size').innerText = origSize;
 
                 const formatBtn = document.querySelector('button[onclick*="format"].active');
-                const selectedFormat = formatBtn ? formatBtn.innerText : "MP3";
-                const selectedBitrate = document.getElementById('bitrate-display').innerText;
+                const selectedFormat = formatBtn ? formatBtn.innerText.toLowerCase() : "mp3";
+                const selectedBitrate = document.getElementById('bitrate-display').innerText.split(' ')[0] + 'k'; // e.g. "320k"
                 
-                document.getElementById('detail-conv-format').innerText = selectedFormat;
-                document.getElementById('detail-conv-bitrate').innerText = selectedBitrate;
-            }
+                document.getElementById('detail-conv-format').innerText = selectedFormat.toUpperCase();
+                document.getElementById('detail-conv-bitrate').innerText = selectedBitrate + "bps";
 
-            let progress = 0;
-            const convertInterval = setInterval(() => {
-                progress += Math.floor(Math.random() * 5) + 1; 
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(convertInterval);
-                    setTimeout(() => updateUI('complete'), 800);
+                try {
+                    // 1. Load the FFmpeg engine if it isn't loaded yet
+                    if (!ffmpeg.loaded) {
+                        await ffmpeg.load();
+                    }
+
+                    // 2. Hook up the real progress bar!
+                    ffmpeg.on('progress', ({ progress }) => {
+                        const percent = Math.round(progress * 100);
+                        if (percent >= 0 && percent <= 100) {
+                            document.getElementById('convert-percent').innerText = percent + '%';
+                            document.getElementById('convert-fill').style.width = percent + '%';
+                        }
+                    });
+
+                    document.getElementById('convert-percent').innerText = 'Reading file...';
+                    
+                    // 3. Write uploaded file to FFmpeg's virtual memory
+                    const originalFileName = 'input_audio.' + origExt.toLowerCase();
+                    const outputFileName = 'output_audio.' + selectedFormat;
+                    await ffmpeg.writeFile(originalFileName, await fetchFile(currentUploadedFile));
+
+                    // 4. RUN THE REAL COMMAND
+                    document.getElementById('convert-percent').innerText = 'Converting...';
+                    await ffmpeg.exec(['-i', originalFileName, '-b:a', selectedBitrate, outputFileName]);
+
+                    // 5. Read the converted file
+                    const fileData = await ffmpeg.readFile(outputFileName);
+                    
+                    // Save to global variable for the Download button
+                    finalConvertedAudioData = new Uint8Array(fileData.buffer);
+
+                    // Done! Show success screen
+                    updateUI('complete');
+
+                } catch (error) {
+                    console.error("Conversion Error:", error);
+                    alert("An error occurred during conversion. Your browser might be blocking the engine.");
+                    resetConverter();
                 }
-                document.getElementById('convert-percent').innerText = progress + '%';
-                document.getElementById('convert-fill').style.width = progress + '%';
-            }, 200);
+            }
         }
 
+        // Keep your reset function exactly the same!
         function resetConverter() {
             if (wavesurfer) wavesurfer.pause();
             if (wavesurferResult) wavesurferResult.pause();
@@ -418,36 +456,38 @@
             document.getElementById('audio-file').value = '';
             document.getElementById('upload-fill').style.width = '0%';
             currentUploadedFile = null;
+            finalConvertedAudioData = null; // Clear the memory
             
             updateUI('init');
         }
 
         function downloadFile() {
-            // Safety check: make sure a file was actually uploaded
-            if (!currentUploadedFile) return;
+            if (!finalConvertedAudioData || !currentUploadedFile) return;
 
-            // 1. Create a temporary memory link to the uploaded file
-            const fileUrl = URL.createObjectURL(currentUploadedFile);
-
-            // 2. Find out which format button is currently selected (MP3, WAV, etc.)
             const formatBtn = document.querySelector('button[onclick*="format"].active');
             const selectedFormat = formatBtn ? formatBtn.innerText.toLowerCase() : "mp3";
+            
+            // Create a real file object
+            let mimeType = "audio/mpeg";
+            if (selectedFormat === 'wav') mimeType = "audio/wav";
+            if (selectedFormat === 'ogg') mimeType = "audio/ogg";
 
-            // 3. Create the new filename (e.g., "Converted_MySong.wav")
+            const blob = new Blob([finalConvertedAudioData], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+
             const originalName = currentUploadedFile.name.split('.')[0];
             const newFileName = "Converted_" + originalName + "." + selectedFormat;
 
-            // 4. Create an invisible HTML link, click it automatically, then delete it
-            const downloadLink = document.createElement('a');
-            downloadLink.href = fileUrl;
-            downloadLink.download = newFileName; // Forces the download with the new name
+            // Trigger the download
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = newFileName;
+            document.body.appendChild(a);
+            a.click();
             
-            document.body.appendChild(downloadLink);
-            downloadLink.click(); // Triggers the real download!
-            document.body.removeChild(downloadLink);
-
-            // Clean up the memory
-            URL.revokeObjectURL(fileUrl);
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
     </script>
 </body>
