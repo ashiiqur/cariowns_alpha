@@ -902,11 +902,23 @@ audio {
     color: #fff; 
 }
 
-#adv-arrow {
-    font-size: 16px;            
-    line-height: 1;             
-    position: relative;
-    top: -2px;                  
+/* --- Coded CSS Triangle --- */
+.arrow-icon {
+    display: inline-block;
+    width: 0; 
+    height: 0; 
+    /* These borders draw the actual triangle */
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid currentColor; 
+    
+    transition: transform 0.3s ease; /* Smooth flip animation */
+    margin-top: 2px; /* Tiny optical adjustment for perfect center */
+}
+
+/* This class flips the triangle upside down */
+.arrow-icon.open {
+    transform: rotate(180deg); 
 }
 .advanced-panel {
     display: none; /* Hidden by default */
