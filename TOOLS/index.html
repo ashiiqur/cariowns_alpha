@@ -83,11 +83,12 @@
                 <div class="ui-state" id="state-ready">
                     <div class="waveform-box">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <span id="ready-filename" style="font-weight: bold;">filename.mp3</span>
+                            <span id="ready-filename" style="font-weight: bold; color: #fff;">filename.mp3</span>
                             <span style="color: #ff424d; cursor: pointer; font-size: 14px;" onclick="resetConverter()">Change</span>
                         </div>
                         <div id="waveform-container" style="margin-bottom: 15px;"></div>
-                        <button class="play-btn" onclick="togglePlay()">▶</button>
+                        
+                        <button class="play-btn" id="play-btn-ready" onclick="togglePlay('ready')">▶</button>
                     </div>
                 </div>
 
@@ -165,9 +166,13 @@
                     <div style="text-align: center; margin-bottom: 20px;">
                         <div class="success-icon">✓</div>
                         <h3>Conversion Complete!</h3>
-                        <p style="color: #888; font-size: 14px;">Simulated conversion finished.</p>
+                        <p id="complete-filename" style="color: #888; font-size: 14px; margin-top: 5px;">filename.mp3</p>
                     </div>
-                    <div id="waveform-result" style="margin-bottom: 20px;"></div>
+                    
+                    <div id="waveform-result" style="margin-bottom: 15px;"></div>
+                    
+                    <button class="play-btn" id="play-btn-result" onclick="togglePlay('result')">▶</button>
+                    
                     <button class="convert-btn" style="background-color: #ff424d; width: 100%; margin-top: 20px;" onclick="resetConverter()">
                         ↓ Download Converted File
                     </button>
@@ -226,42 +231,67 @@
             buttonElement.classList.add("active");
         }
         // ==========================================
-        // 3. Audio Converter UI Flow & Waveform
+        // 3. Audio Converter Logic & UI Flow
         // ==========================================
         
+        // --- BUTTON & SETTINGS LOGIC (Restored) ---
+        function toggleAdvancedSettings() {
+            const panel = document.getElementById('advanced-panel');
+            const arrow = document.getElementById('adv-arrow');
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                arrow.innerText = "⌄";
+            } else {
+                panel.style.display = "block";
+                arrow.innerText = "⌃";
+            }
+        }
+
+        function selectAudioBtn(clickedBtn, groupName) {
+            const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
+            allBtns.forEach(btn => btn.classList.remove('active'));
+            clickedBtn.classList.add('active');
+        }
+
+        function updateBitrate(value) {
+            document.getElementById('bitrate-display').innerText = value + " kbps";
+        }
+
+        // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
 
-        // Function to switch visible UI states
         function showState(stateId) {
             document.querySelectorAll('.ui-state').forEach(el => el.classList.remove('active-state'));
             document.getElementById(stateId).classList.add('active-state');
+            
+            // Hide settings during uploading, converting, and complete states
+            const settings = document.getElementById('settings-container');
+            if(stateId === 'state-uploading' || stateId === 'state-converting' || stateId === 'state-complete') {
+                if(settings) settings.style.display = 'none';
+            } else {
+                if(settings) settings.style.display = 'block';
+            }
         }
 
-        // STEP 1: Handle File Selection & Fake Upload
         document.getElementById('audio-file').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
 
-            // Set filenames in the UI
+            // Update filenames across all screens
             document.getElementById('upload-filename').innerText = file.name;
             document.getElementById('ready-filename').innerText = file.name;
+            document.getElementById('complete-filename').innerText = "Converted: " + file.name;
 
-            // Switch to Uploading state
             showState('state-uploading');
 
-            // Simulate Upload Progress
             let progress = 0;
             const uploadInterval = setInterval(() => {
-                progress += Math.floor(Math.random() * 15) + 5; // Jump by 5-20%
+                progress += Math.floor(Math.random() * 15) + 5; 
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(uploadInterval);
-                    
-                    // Generate REAL waveform from the uploaded file
                     generateWaveform(file);
-                    
-                    // Show ready state and Convert Button
                     setTimeout(() => {
                         showState('state-ready');
                         document.getElementById('main-convert-btn').style.display = 'block';
@@ -272,28 +302,25 @@
             }, 300);
         });
 
-        // Generate the Real Waveform using WaveSurfer
         function generateWaveform(file) {
             const fileUrl = URL.createObjectURL(file);
             
-            // Destroy old instance if it exists
             if (wavesurfer) wavesurfer.destroy();
-
-            // Create new waveform
             wavesurfer = WaveSurfer.create({
                 container: '#waveform-container',
                 waveColor: '#555',
                 progressColor: '#ff424d',
                 cursorColor: '#ff424d',
-                barWidth: 2,
-                barRadius: 2,
-                height: 80,
-                normalize: true // Makes quiet audio look bigger
+                barWidth: 2, barRadius: 2, height: 80, normalize: true
             });
-
             wavesurfer.load(fileUrl);
             
-            // Prepare the "Result" waveform for the final screen (copying it)
+            // Swap Play/Pause icon for Ready Screen
+            const playBtnReady = document.getElementById('play-btn-ready');
+            wavesurfer.on('play', () => playBtnReady.innerText = '⏸');
+            wavesurfer.on('pause', () => playBtnReady.innerText = '▶');
+            wavesurfer.on('finish', () => playBtnReady.innerText = '▶');
+
             if (wavesurferResult) wavesurferResult.destroy();
             wavesurferResult = WaveSurfer.create({
                 container: '#waveform-result',
@@ -302,21 +329,27 @@
                 barWidth: 2, barRadius: 2, height: 60, normalize: true
             });
             wavesurferResult.load(fileUrl);
+
+            // Swap Play/Pause icon for Final Screen
+            const playBtnResult = document.getElementById('play-btn-result');
+            wavesurferResult.on('play', () => playBtnResult.innerText = '⏸');
+            wavesurferResult.on('pause', () => playBtnResult.innerText = '▶');
+            wavesurferResult.on('finish', () => playBtnResult.innerText = '▶');
         }
 
-        // Play/Pause button logic
-        function togglePlay() {
-            if (wavesurfer) wavesurfer.playPause();
+        function togglePlay(type) {
+            if (type === 'ready' && wavesurfer) wavesurfer.playPause();
+            if (type === 'result' && wavesurferResult) wavesurferResult.playPause();
         }
 
-        // STEP 2: Start Fake Conversion
         function startConversion() {
             document.getElementById('main-convert-btn').style.display = 'none';
+            if (wavesurfer) wavesurfer.pause(); // Stop music if playing
             showState('state-converting');
 
             let progress = 0;
             const convertInterval = setInterval(() => {
-                progress += Math.floor(Math.random() * 5) + 1; // Slower progress
+                progress += Math.floor(Math.random() * 5) + 1; 
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(convertInterval);
@@ -327,7 +360,6 @@
             }, 200);
         }
 
-        // Reset everything if user clicks Change or Download
         function resetConverter() {
             if (wavesurfer) wavesurfer.pause();
             if (wavesurferResult) wavesurferResult.pause();
