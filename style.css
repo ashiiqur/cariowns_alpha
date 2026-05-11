@@ -885,14 +885,29 @@ audio {
 }
 
 .advanced-toggle {
-    text-align: center;
+    display: flex;              
+    justify-content: center;    
+    align-items: center;        
+    gap: 6px;                   
     color: #aaa;
     cursor: pointer;
     margin: 20px 0;
     font-size: 14px;
     transition: color 0.3s;
+    user-select: none;          
+    -webkit-user-select: none;  
 }
-.advanced-toggle:hover { color: #fff; }
+
+.advanced-toggle:hover { 
+    color: #fff; 
+}
+
+#adv-arrow {
+    font-size: 16px;            
+    line-height: 1;             
+    position: relative;
+    top: -2px;                  
+}
 .advanced-panel {
     display: none; /* Hidden by default */
     background-color: #1a1a1a;
