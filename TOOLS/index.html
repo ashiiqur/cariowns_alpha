@@ -36,14 +36,26 @@
     </header>
 
     <main>
-        <h1>Tools & Resources</h1>
+        <h2>Tools & Resources</h2>
         <p>Custom tools created by cariowns.</p>
-        
-        <p style="color: #ff424d; font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 50px; text-transform: uppercase;">
-            ( Coming Soon )
-        </p>
-    </main>>
 
+        <div class="tool-tabs">
+            <button class="tab-btn active" onclick="openTab('audio-tools', this)">Audio</button>
+            <button class="tab-btn" onclick="openTab('image-tools', this)">Image</button>
+        </div>
+
+        <div id="audio-tools" class="tool-section">
+            <p style="color: #ff424d; font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 50px; text-transform: uppercase;">
+                ( Coming Soon: Audio Tools )
+            </p>
+        </div>
+
+        <div id="image-tools" class="tool-section" style="display: none;">
+            <p style="color: #ff424d; font-size: 14px; font-weight: bold; letter-spacing: 3px; margin-top: 50px; text-transform: uppercase;">
+                ( Coming Soon: Image Tools )
+            </p>
+        </div>
+    </main>
     <footer>
         <p>This website is designed by <a href="https://instagram.com/ashiqur.sf" target="_blank">ashiqur</a>. Thank you for visiting this website.</p>
         <p>&copy; 2026 cariowns. All rights reserved.</p>
