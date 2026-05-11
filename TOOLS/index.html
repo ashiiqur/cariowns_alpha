@@ -246,12 +246,12 @@
             }
         }
 
-        // --- BONUS UX: If they change a setting after conversion, bring the Convert button back! ---
         function selectAudioBtn(clickedBtn, groupName) {
             const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
             allBtns.forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
             
+            // If they change a setting after conversion, hide the success box and prepare to convert again
             if (document.getElementById('state-complete').classList.contains('active-state')) {
                 updateUI('ready'); 
             }
@@ -268,9 +268,7 @@
         let wavesurfer = null;
         let wavesurferResult = null;
 
-        // NEW: Smart UI Manager that keeps the file and settings visible!
         function updateUI(phase) {
-            // Remove active state from everything first
             const sections = ['state-upload', 'state-uploading', 'state-ready', 'state-converting', 'state-complete'];
             sections.forEach(id => {
                 const el = document.getElementById(id);
@@ -293,21 +291,27 @@
             else if (phase === 'ready') {
                 document.getElementById('state-ready').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
-                if(convertBtn) convertBtn.style.display = 'block';
+                if(convertBtn) {
+                    convertBtn.style.display = 'block';
+                    convertBtn.innerText = 'Convert File'; // Standard text
+                }
             }
             else if (phase === 'converting') {
-                // Keeps the file visible AND shows the converting bar!
                 document.getElementById('state-ready').classList.add('active-state');
                 document.getElementById('state-converting').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
-                if(convertBtn) convertBtn.style.display = 'none';
+                if(convertBtn) convertBtn.style.display = 'none'; // Hide while loading
             }
             else if (phase === 'complete') {
-                // Keeps the file visible AND shows the completion box!
                 document.getElementById('state-ready').classList.add('active-state');
                 document.getElementById('state-complete').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
-                if(convertBtn) convertBtn.style.display = 'none';
+                
+                // THE FIX: Keep the convert button visible and change the text!
+                if(convertBtn) {
+                    convertBtn.style.display = 'block';
+                    convertBtn.innerText = 'Convert Again';
+                }
             }
         }
 
@@ -377,7 +381,6 @@
             if (wavesurfer) wavesurfer.pause(); 
             updateUI('converting');
 
-            // Reset the converting progress bar each time
             document.getElementById('convert-percent').innerText = '0%';
             document.getElementById('convert-fill').style.width = '0%';
 
@@ -405,7 +408,6 @@
         }
 
         function downloadFile() {
-            // This is just a placeholder alert until you connect a backend server!
             alert("This is where the browser will download the converted file!");
         }
     </script>
