@@ -45,7 +45,7 @@
             <button class="tab-btn" onclick="openTab('gif-tools', this)">GIF</button>
         </div>
 
-       <div id="audio-tools" class="tool-section">
+     <div id="audio-tools" class="tool-section">
             <h2 style="margin-bottom: 5px;">Online Audio Converter</h2>
             <p style="color: #ff424d; font-size: 13px; margin-bottom: 30px; letter-spacing: 1px;">
                 NOTICE: On refresh you will lose all data and uploaded files.
@@ -87,7 +87,6 @@
                             <span style="color: #ff424d; cursor: pointer; font-size: 14px;" onclick="resetConverter()">Change</span>
                         </div>
                         <div id="waveform-container" style="margin-bottom: 15px;"></div>
-                        
                         <button class="play-btn" id="play-btn-ready" onclick="togglePlay('ready')">▶</button>
                     </div>
                 </div>
@@ -151,11 +150,10 @@
                         <input type="range" min="64" max="320" step="32" value="256" class="audio-slider" id="bitrate-slider" oninput="updateBitrate(this.value)">
                     </div>
                 </div>
-            </div>
-           </div> <button class="convert-btn" id="main-convert-btn" onclick="startConversion()" style="display: none; margin: 25px 0;">Convert File</button>
+            </div> 
 
-            <div class="ui-state" id="state-converting">
-            
+            <button class="convert-btn" id="main-convert-btn" onclick="startConversion()" style="display: none; margin: 25px 0;">Convert File</button>
+
             <div class="ui-state" id="state-converting">
                 <div class="progress-box" style="text-align: left; padding: 30px;">
                     <h4 style="margin-bottom: 15px;">Converting...</h4>
@@ -194,7 +192,6 @@
                     </button>
                 </div>
             </div>
-
         </div>
 
         <div id="image-tools" class="tool-section" style="display: none;">
