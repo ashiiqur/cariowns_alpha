@@ -940,3 +940,69 @@ audio {
     background-color: #ff2a38;
     transform: translateY(-2px);
 }
+/* --- UI State Machine --- */
+.ui-state {
+    display: none; /* Hide all states by default */
+}
+.ui-state.active-state {
+    display: block; /* Only show the active one */
+    animation: fadeIn 0.3s ease;
+}
+
+/* Progress Bars & Boxes */
+.progress-box, .waveform-box, .success-box {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+}
+.waveform-box, .success-box { padding: 20px; text-align: left; }
+
+.progress-bar-bg {
+    width: 80%;
+    max-width: 400px;
+    height: 8px;
+    background-color: #333;
+    border-radius: 4px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #ff424d;
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+/* Waveform Play Button */
+.play-btn {
+    background-color: #ff424d;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.play-btn:hover { background-color: #ff2a38; }
+
+/* Success Checkmark */
+.success-icon {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 66, 77, 0.1);
+    color: #ff424d;
+    border: 2px solid #ff424d;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 10px auto;
+}
