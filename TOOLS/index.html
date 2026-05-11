@@ -226,41 +226,118 @@
             buttonElement.classList.add("active");
         }
         // ==========================================
-        // 3. Audio Converter Logic
+        // 3. Audio Converter UI Flow & Waveform
         // ==========================================
+        
+        let wavesurfer = null;
+        let wavesurferResult = null;
 
-        // Update file upload text when a file is selected
+        // Function to switch visible UI states
+        function showState(stateId) {
+            document.querySelectorAll('.ui-state').forEach(el => el.classList.remove('active-state'));
+            document.getElementById(stateId).classList.add('active-state');
+        }
+
+        // STEP 1: Handle File Selection & Fake Upload
         document.getElementById('audio-file').addEventListener('change', function(e) {
-            const fileName = e.target.files[0] ? e.target.files[0].name : "Drop your audio or video file here";
-            document.getElementById('upload-text').innerText = fileName;
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Set filenames in the UI
+            document.getElementById('upload-filename').innerText = file.name;
+            document.getElementById('ready-filename').innerText = file.name;
+
+            // Switch to Uploading state
+            showState('state-uploading');
+
+            // Simulate Upload Progress
+            let progress = 0;
+            const uploadInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 15) + 5; // Jump by 5-20%
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(uploadInterval);
+                    
+                    // Generate REAL waveform from the uploaded file
+                    generateWaveform(file);
+                    
+                    // Show ready state and Convert Button
+                    setTimeout(() => {
+                        showState('state-ready');
+                        document.getElementById('main-convert-btn').style.display = 'block';
+                    }, 500);
+                }
+                document.getElementById('upload-percent').innerText = progress + '%';
+                document.getElementById('upload-fill').style.width = progress + '%';
+            }, 300);
         });
 
-        // Toggle Advanced Settings Panel
-        function toggleAdvancedSettings() {
-            const panel = document.getElementById('advanced-panel');
-            const arrow = document.getElementById('adv-arrow');
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-                arrow.innerText = "⌄";
-            } else {
-                panel.style.display = "block";
-                arrow.innerText = "⌃";
-            }
+        // Generate the Real Waveform using WaveSurfer
+        function generateWaveform(file) {
+            const fileUrl = URL.createObjectURL(file);
+            
+            // Destroy old instance if it exists
+            if (wavesurfer) wavesurfer.destroy();
+
+            // Create new waveform
+            wavesurfer = WaveSurfer.create({
+                container: '#waveform-container',
+                waveColor: '#555',
+                progressColor: '#ff424d',
+                cursorColor: '#ff424d',
+                barWidth: 2,
+                barRadius: 2,
+                height: 80,
+                normalize: true // Makes quiet audio look bigger
+            });
+
+            wavesurfer.load(fileUrl);
+            
+            // Prepare the "Result" waveform for the final screen (copying it)
+            if (wavesurferResult) wavesurferResult.destroy();
+            wavesurferResult = WaveSurfer.create({
+                container: '#waveform-result',
+                waveColor: '#333',
+                progressColor: '#ff424d',
+                barWidth: 2, barRadius: 2, height: 60, normalize: true
+            });
+            wavesurferResult.load(fileUrl);
         }
 
-        // Logic to make only ONE button active per group
-        function selectAudioBtn(clickedBtn, groupName) {
-            // Find all buttons that share the same onclick function argument
-            const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
-            // Remove 'active' class from all of them
-            allBtns.forEach(btn => btn.classList.remove('active'));
-            // Add 'active' class to the one just clicked
-            clickedBtn.classList.add('active');
+        // Play/Pause button logic
+        function togglePlay() {
+            if (wavesurfer) wavesurfer.playPause();
         }
 
-        // Update the Bitrate text when slider moves
-        function updateBitrate(value) {
-            document.getElementById('bitrate-display').innerText = value + " kbps";
+        // STEP 2: Start Fake Conversion
+        function startConversion() {
+            document.getElementById('main-convert-btn').style.display = 'none';
+            showState('state-converting');
+
+            let progress = 0;
+            const convertInterval = setInterval(() => {
+                progress += Math.floor(Math.random() * 5) + 1; // Slower progress
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(convertInterval);
+                    setTimeout(() => showState('state-complete'), 800);
+                }
+                document.getElementById('convert-percent').innerText = progress + '%';
+                document.getElementById('convert-fill').style.width = progress + '%';
+            }, 200);
+        }
+
+        // Reset everything if user clicks Change or Download
+        function resetConverter() {
+            if (wavesurfer) wavesurfer.pause();
+            if (wavesurferResult) wavesurferResult.pause();
+            
+            document.getElementById('audio-file').value = '';
+            document.getElementById('upload-fill').style.width = '0%';
+            document.getElementById('convert-fill').style.width = '0%';
+            document.getElementById('main-convert-btn').style.display = 'none';
+            
+            showState('state-upload');
         }
     </script>
 </body>
