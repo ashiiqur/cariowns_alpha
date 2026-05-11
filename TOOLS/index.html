@@ -65,6 +65,24 @@
         const menuBtn = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         menuBtn.addEventListener('click', () => { navLinks.classList.toggle('active'); });
+        / NEW: Tab Switcher Logic
+        function openTab(tabName, buttonElement) {
+            // 1. Hide all tool screens
+            let sections = document.getElementsByClassName("tool-section");
+            for (let i = 0; i < sections.length; i++) {
+                sections[i].style.display = "none";
+            }
+            
+            // 2. Remove the 'active' styling from all buttons
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            
+            // 3. Show the selected screen and make that button red
+            document.getElementById(tabName).style.display = "block";
+            buttonElement.classList.add("active");
+        }
     </script>
 </body>
 </html>
