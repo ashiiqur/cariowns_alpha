@@ -173,9 +173,9 @@
                     
                     <button class="play-btn" id="play-btn-result" onclick="togglePlay('result')">▶</button>
                     
-                    <button class="convert-btn" style="background-color: #ff424d; width: 100%; margin-top: 20px;" onclick="resetConverter()">
-                        ↓ Download Converted File
-                    </button>
+                    <button class="convert-btn" style="background-color: #ff424d; width: 100%; margin-top: 20px;" onclick="downloadFile()">
+    ↓ Download Converted File
+</button>
                 </div>
             </div>
 
@@ -234,7 +234,6 @@
         // 3. Audio Converter Logic & UI Flow
         // ==========================================
         
-        // --- BUTTON & SETTINGS LOGIC (Restored) ---
         function toggleAdvancedSettings() {
             const panel = document.getElementById('advanced-panel');
             const arrow = document.getElementById('adv-arrow');
@@ -247,30 +246,68 @@
             }
         }
 
+        // --- BONUS UX: If they change a setting after conversion, bring the Convert button back! ---
         function selectAudioBtn(clickedBtn, groupName) {
             const allBtns = document.querySelectorAll(`button[onclick="selectAudioBtn(this, '${groupName}')"]`);
             allBtns.forEach(btn => btn.classList.remove('active'));
             clickedBtn.classList.add('active');
+            
+            if (document.getElementById('state-complete').classList.contains('active-state')) {
+                updateUI('ready'); 
+            }
         }
 
         function updateBitrate(value) {
             document.getElementById('bitrate-display').innerText = value + " kbps";
+            if (document.getElementById('state-complete').classList.contains('active-state')) {
+                updateUI('ready'); 
+            }
         }
 
         // --- WAVEFORM & CONVERSION FLOW ---
         let wavesurfer = null;
         let wavesurferResult = null;
 
-        function showState(stateId) {
-            document.querySelectorAll('.ui-state').forEach(el => el.classList.remove('active-state'));
-            document.getElementById(stateId).classList.add('active-state');
+        // NEW: Smart UI Manager that keeps the file and settings visible!
+        function updateUI(phase) {
+            // Remove active state from everything first
+            const sections = ['state-upload', 'state-uploading', 'state-ready', 'state-converting', 'state-complete'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active-state');
+            });
             
-            // Hide settings during uploading, converting, and complete states
             const settings = document.getElementById('settings-container');
-            if(stateId === 'state-uploading' || stateId === 'state-converting' || stateId === 'state-complete') {
-                if(settings) settings.style.display = 'none';
-            } else {
+            const convertBtn = document.getElementById('main-convert-btn');
+            
+            if (phase === 'init') {
+                document.getElementById('state-upload').classList.add('active-state');
                 if(settings) settings.style.display = 'block';
+                if(convertBtn) convertBtn.style.display = 'none';
+            }
+            else if (phase === 'uploading') {
+                document.getElementById('state-uploading').classList.add('active-state');
+                if(settings) settings.style.display = 'none';
+                if(convertBtn) convertBtn.style.display = 'none';
+            }
+            else if (phase === 'ready') {
+                document.getElementById('state-ready').classList.add('active-state');
+                if(settings) settings.style.display = 'block';
+                if(convertBtn) convertBtn.style.display = 'block';
+            }
+            else if (phase === 'converting') {
+                // Keeps the file visible AND shows the converting bar!
+                document.getElementById('state-ready').classList.add('active-state');
+                document.getElementById('state-converting').classList.add('active-state');
+                if(settings) settings.style.display = 'block';
+                if(convertBtn) convertBtn.style.display = 'none';
+            }
+            else if (phase === 'complete') {
+                // Keeps the file visible AND shows the completion box!
+                document.getElementById('state-ready').classList.add('active-state');
+                document.getElementById('state-complete').classList.add('active-state');
+                if(settings) settings.style.display = 'block';
+                if(convertBtn) convertBtn.style.display = 'none';
             }
         }
 
@@ -278,12 +315,11 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            // Update filenames across all screens
             document.getElementById('upload-filename').innerText = file.name;
             document.getElementById('ready-filename').innerText = file.name;
             document.getElementById('complete-filename').innerText = "Converted: " + file.name;
 
-            showState('state-uploading');
+            updateUI('uploading');
 
             let progress = 0;
             const uploadInterval = setInterval(() => {
@@ -292,10 +328,7 @@
                     progress = 100;
                     clearInterval(uploadInterval);
                     generateWaveform(file);
-                    setTimeout(() => {
-                        showState('state-ready');
-                        document.getElementById('main-convert-btn').style.display = 'block';
-                    }, 500);
+                    setTimeout(() => updateUI('ready'), 500);
                 }
                 document.getElementById('upload-percent').innerText = progress + '%';
                 document.getElementById('upload-fill').style.width = progress + '%';
@@ -315,7 +348,6 @@
             });
             wavesurfer.load(fileUrl);
             
-            // Swap Play/Pause icon for Ready Screen
             const playBtnReady = document.getElementById('play-btn-ready');
             wavesurfer.on('play', () => playBtnReady.innerText = '⏸');
             wavesurfer.on('pause', () => playBtnReady.innerText = '▶');
@@ -330,7 +362,6 @@
             });
             wavesurferResult.load(fileUrl);
 
-            // Swap Play/Pause icon for Final Screen
             const playBtnResult = document.getElementById('play-btn-result');
             wavesurferResult.on('play', () => playBtnResult.innerText = '⏸');
             wavesurferResult.on('pause', () => playBtnResult.innerText = '▶');
@@ -343,9 +374,12 @@
         }
 
         function startConversion() {
-            document.getElementById('main-convert-btn').style.display = 'none';
-            if (wavesurfer) wavesurfer.pause(); // Stop music if playing
-            showState('state-converting');
+            if (wavesurfer) wavesurfer.pause(); 
+            updateUI('converting');
+
+            // Reset the converting progress bar each time
+            document.getElementById('convert-percent').innerText = '0%';
+            document.getElementById('convert-fill').style.width = '0%';
 
             let progress = 0;
             const convertInterval = setInterval(() => {
@@ -353,7 +387,7 @@
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(convertInterval);
-                    setTimeout(() => showState('state-complete'), 800);
+                    setTimeout(() => updateUI('complete'), 800);
                 }
                 document.getElementById('convert-percent').innerText = progress + '%';
                 document.getElementById('convert-fill').style.width = progress + '%';
@@ -366,10 +400,13 @@
             
             document.getElementById('audio-file').value = '';
             document.getElementById('upload-fill').style.width = '0%';
-            document.getElementById('convert-fill').style.width = '0%';
-            document.getElementById('main-convert-btn').style.display = 'none';
             
-            showState('state-upload');
+            updateUI('init');
+        }
+
+        function downloadFile() {
+            // This is just a placeholder alert until you connect a backend server!
+            alert("This is where the browser will download the converted file!");
         }
     </script>
 </body>
