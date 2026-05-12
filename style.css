@@ -1068,3 +1068,17 @@ audio {
   color: #1DA1F2;
   text-shadow: 0 4px 12px rgba(29, 161, 242, 0.5);
 }
+/* Base styles for the Home link container */
+.home-link {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* The space between the logo and the text */
+    text-decoration: none;
+}
+
+/* Sizing for the SVG Logo on all devices */
+.nav-logo {
+    width: 24px;   /* Adjust this to make the logo larger or smaller globally */
+    height: 24px;
+    transform: translateY(2px); /* A tiny downward shift to align perfectly with text */
+}
