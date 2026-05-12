@@ -1023,3 +1023,48 @@ audio {
     font-size: 24px;
     margin: 0 auto 10px auto;
 }
+/* Container for the icons */
+.social-icons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;         
+  margin-top: 40px;  
+  margin-bottom: 40px; 
+}
+
+/* Base styling for the icons */
+.social-icon {
+  color: #ffffff;    
+  font-size: 28px;   
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              text-shadow 0.3s ease, 
+              color 0.3s ease;
+}
+
+/* Hover effect */
+.social-icon:hover {
+  transform: translateY(-6px) scale(1.15);
+}
+
+.social-icon.instagram:hover {
+  color: #E1306C;
+  text-shadow: 0 4px 12px rgba(225, 48, 108, 0.5);
+}
+
+.social-icon.youtube:hover {
+  color: #FF0000;
+  text-shadow: 0 4px 12px rgba(255, 0, 0, 0.5);
+}
+
+.social-icon.music:hover {
+  color: #ff3b3b; 
+  text-shadow: 0 4px 12px rgba(255, 59, 59, 0.5);
+}
+
+.social-icon.twitter:hover {
+  color: #1DA1F2;
+  text-shadow: 0 4px 12px rgba(29, 161, 242, 0.5);
+}
